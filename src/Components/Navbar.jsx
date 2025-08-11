@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import useStore from '../store/useStore';
+import useStore from '../Store/UseStore';
 
 const services = [
   { name: 'Custom Web Development', path: '/services/web-development' },
