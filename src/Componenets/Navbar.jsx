@@ -75,7 +75,7 @@ const Navbar = () => {
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.2 }}
             >
-              Neat<span className="text-primary-500">Tech</span>
+              Neat<span className="text-primary-500">Node</span>
             </motion.div>
           </Link>
 
