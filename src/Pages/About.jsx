@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useRef } from 'react';
 
 const About = () => {
   const values = [
@@ -31,83 +32,130 @@ const About = () => {
     { number: "24/7", label: "Support Available" }
   ];
 
+  const missionPoints = [
+    {
+      title: "Innovative Solutions",
+      description: "Delivering cutting-edge technology that transforms businesses."
+    },
+    {
+      title: "Customer Centric",
+      description: "Putting clients first to tailor solutions that truly fit their needs."
+    },
+    {
+      title: "Quality Assurance",
+      description: "Commitment to excellence in every product and service."
+    },
+  ];
+
+  const storyText = `
+    Founded in 2018, Neat Technologies started as a small team of passionate developers 
+    with a vision to revolutionize the way technology serves businesses. Over the years, 
+    we grew into a diverse team of experts dedicated to innovation, collaboration, and 
+    delivering outstanding results. Our journey has been fueled by a constant desire to 
+    push boundaries and a deep commitment to our clients' success.
+  `;
+
+  // Ref for the team section to scroll to
+  const teamRef = useRef(null);
+
+  // Scroll handler for the button
+  const scrollToTeam = () => {
+    if (teamRef.current) {
+      teamRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="py-20 bg-gradient-to-br from-[#2E8B9C] via-[#415A77] to-[#9BBEC8] text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            className="text-center mb-20"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h1 className="text-4xl lg:text-5xl font-bold mb-6">
-              About Us
-            </h1>
-            <p className="text-xl max-w-3xl mx-auto leading-relaxed text-gray-100">
-              We are passionate technologists dedicated to creating software solutions 
-              that make a real difference in the world.
-            </p>
-          </motion.div>
+      {/* About Us Heading */}
+      <motion.h1
+        className="text-5xl font-extrabold text-center my-16 text-[#2E8B9C]"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+      >
+        About Us
+      </motion.h1>
 
-          {/* Main Content */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              <h2 className="text-3xl font-bold text-[#2E8B9C] mb-6">
-                Our Mission
-              </h2>
-              <p className="text-gray-200 text-lg leading-relaxed mb-6">
-                At Neat Technologies, we believe that great software is more than just code—it's 
-                about solving real problems and creating meaningful experiences. Our mission is 
-                to empower businesses of all sizes with innovative, scalable, and elegant 
-                technology solutions.
-              </p>
-              <p className="text-gray-200 text-lg leading-relaxed mb-8">
-                Founded by a team of experienced developers and designers, we combine technical 
-                expertise with creative thinking to deliver solutions that not only meet your 
-                requirements but exceed your expectations. We're committed to building long-term 
-                partnerships with our clients and helping them achieve their digital transformation goals.
-              </p>
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+    {/* Left: Story */}
+    <div>
+      {/* Story Section */}
+      <motion.h2
+        className="text-4xl font-bold mb-6 text-[#2E8B9C]"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+      >
+        Our Story
+      </motion.h2>
+      <motion.p
+        className="text-lg leading-relaxed text-gray-700 whitespace-pre-line"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, delay: 0.3 }}
+      >
+        {storyText}
+      </motion.p>
 
-              <div className="space-y-4">
-                <div className="flex items-center">
-                  <div className="w-2 h-2 bg-[#9BBEC8] rounded-full mr-3"></div>
-                  <span className="text-gray-100">Expert team with 5+ years of experience</span>
-                </div>
-                <div className="flex items-center">
-                  <div className="w-2 h-2 bg-[#9BBEC8] rounded-full mr-3"></div>
-                  <span className="text-gray-100">Cutting-edge technology stack</span>
-                </div>
-                <div className="flex items-center">
-                  <div className="w-2 h-2 bg-[#9BBEC8] rounded-full mr-3"></div>
-                  <span className="text-gray-100">Agile development methodology</span>
-                </div>
-                <div className="flex items-center">
-                  <div className="w-2 h-2 bg-[#9BBEC8] rounded-full mr-3"></div>
-                  <span className="text-gray-100">24/7 support and maintenance</span>
-                </div>
-              </div>
-            </motion.div>
+      <button
+        onClick={scrollToTeam}
+        className="mt-8 bg-[#2E8B9C] hover:bg-[#1F5D6F] text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300"
+      >
+        Meet the Team
+      </button>
+    </div>
 
-            <motion.div
-              className="bg-[#9BBEC8] aspect-square rounded-2xl flex items-center justify-center"
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
-              <div className="text-center text-white">
-                <div className="text-8xl mb-4">🏢</div>
-                <p className="text-lg font-medium">Our Team</p>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
+    {/* Right: Image */}
+    <motion.div
+      className="rounded-2xl overflow-hidden shadow-lg"
+      initial={{ opacity: 0, x: 30 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8 }}
+    >
+      <img
+        src="/aboutus.png"
+        alt="More About Us"
+        className="w-full h-full object-cover rounded-2xl"
+      />
+    </motion.div>
+  </div>
+
+  {/* Mission Section Below Story + Image */}
+  <section className="mt-20">
+    <motion.h2
+      className="text-4xl font-bold mb-8 text-[#2E8B9C]"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8 }}
+    >
+      Our Mission
+    </motion.h2>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {missionPoints.map((mission, idx) => (
+        <motion.div
+          key={idx}
+          className="bg-white bg-opacity-90 rounded-xl shadow-lg p-6 text-center text-[#2E8B9C]"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: idx * 0.2 }}
+          whileHover={{ y: -5, boxShadow: "0 10px 20px rgba(46, 139, 156, 0.4)" }}
+        >
+          <h3 className="text-xl font-semibold mb-2">{mission.title}</h3>
+          <p className="text-gray-700">{mission.description}</p>
+        </motion.div>
+      ))}
+    </div>
+  </section>
+</section>
+
+      {/* Original Main Content (More About Us text + Team placeholder image) */}
 
       {/* Stats Section */}
       <section className="py-20 bg-gradient-to-r from-[#F7F9FB] via-[#C9E4E7] to-[#F7F9FB]">
@@ -144,54 +192,36 @@ const About = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="text-3xl font-bold text-[#415A77] mb-4">
-              Our Core Values
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              These principles guide everything we do and shape how we work with our clients and each other.
-            </p>
+            <h2 className="text-4xl font-extrabold text-[#2E8B9C]">Our Core Values</h2>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {values.map((value, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+            {values.map((value, idx) => (
               <motion.div
-                key={index}
-                className="text-center p-6 bg-gradient-to-br from-[#F7F9FB] to-[#C9E4E7] rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300"
-                initial={{ opacity: 0, y: 30 }}
+                key={idx}
+                className="bg-[#2E8B9C] text-white rounded-xl p-8 shadow-lg cursor-default"
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-                whileHover={{ y: -5 }}
+                transition={{ duration: 0.6, delay: idx * 0.15 }}
+                whileHover={{ scale: 1.05, boxShadow: "0 8px 24px rgba(46,139,156,0.4)" }}
               >
                 <div className="text-4xl mb-4">{value.icon}</div>
-                <h3 className="text-xl font-semibold text-[#2E8B9C] mb-3">{value.title}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">{value.description}</p>
+                <h3 className="text-xl font-semibold mb-2">{value.title}</h3>
+                <p className="text-[#B0D3D7]">{value.description}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Team Section */}
-      <section className="py-20 bg-[#F7F9FB]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-3xl font-bold text-[#415A77] mb-4">
-              Meet Our Team
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Our diverse team of experts brings together years of experience in software 
-              development, design, and business strategy.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {/* Team Section Placeholder */}
+      <section ref={teamRef} className="py-20 bg-[#1F5D6F] text-white text-center">
+        <h2 className="text-4xl font-bold mb-8">Meet the Team</h2>
+        <p className="max-w-3xl mx-auto mb-6">
+          Our talented team of professionals is dedicated to driving your success.
+        </p>
+       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               { name: "Nida Khan", role: "Chief Technology Officer", expertise: "Full-stack Development" },
               { name: "Zulqarnain ", role: "Head of Design", expertise: "UI/UX Design" },
@@ -215,7 +245,6 @@ const About = () => {
               </motion.div>
             ))}
           </div>
-        </div>
       </section>
     </div>
   );

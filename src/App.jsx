@@ -6,11 +6,13 @@ import ServiceDetail from './Pages/ServiceDetail';
 import About from './Pages/About';
 import HowWeWork from './Pages/HowWeWork';
 import Contact from './Pages/Contact';
-
+import Footer from './Pages/Footer';
+import ScrollToTop from './Pages/ScrollTop';
 
 function App() {
   return (
     <Router>
+      <ScrollToTop/>
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -21,6 +23,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
         </Routes>
       </Layout>
+      <Footer/>
     </Router>
   );
 }

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import useStore from '../Store/UseStore';
 
 const Contact = () => {
@@ -48,28 +48,90 @@ const Contact = () => {
       link: "#"
     }
   ];
+  const TypingEffect = ({ text, speed = 150, className }) => {
+  const [displayedText, setDisplayedText] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    let timeout;
+
+    if (!isDeleting && index <= text.length) {
+      timeout = setTimeout(() => {
+        setDisplayedText(text.slice(0, index));
+        setIndex(index + 1);
+      }, speed);
+    } else if (isDeleting && index >= 0) {
+      timeout = setTimeout(() => {
+        setDisplayedText(text.slice(0, index));
+        setIndex(index - 1);
+      }, speed / 2);
+    }
+
+    if (index === text.length + 1 && !isDeleting) {
+      timeout = setTimeout(() => {
+        setIsDeleting(true);
+        setIndex(index - 1);
+      }, 1000); // Pause before deleting
+    } else if (index === -1 && isDeleting) {
+      timeout = setTimeout(() => {
+        setIsDeleting(false);
+        setIndex(0);
+      }, 500); // Pause before typing again
+    }
+
+    return () => clearTimeout(timeout);
+  }, [index, isDeleting, text, speed]);
+
+  return <span className={className}>{displayedText}</span>;
+};
+
 
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="py-20 bg-gradient-to-br from-[#2E8B9C] to-[#9BBEC8]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h1 className="text-4xl lg:text-5xl font-bold text-white mb-6">
-              Get in Touch
-            </h1>
-            <p className="text-lg text-[#E0F2F1] max-w-3xl mx-auto leading-relaxed">
-              Ready to start your next project? We'd love to hear about your ideas 
-              and discuss how we can help bring them to life.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+    {/* Hero Section */}
+ <section className="py-20 bg-white">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="flex flex-col lg:flex-row items-center gap-19">
+        {/* Text Content */}
+        <motion.div
+          className="lg:w-1/2 text-center lg:text-left"
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <h1 className="text-5xl lg:text-6xl font-bold mb-6" style={{ color: '#2E8B9C' }}>
+            Get in{' '}
+            <TypingEffect
+              text="Touch"
+              className="border-r-2 border-[#2E8B9C] pr-1"
+              speed={150}
+            />
+          </h1>
+          <p className="text-lg text-gray-700 max-w-md mx-auto lg:mx-0 leading-relaxed">
+            Ready to start your next project? We'd love to hear about your ideas and discuss how we can help bring them to life.
+          </p>
+        </motion.div>
+
+        {/* Image Card */}
+        <motion.div
+          className="lg:w-1/2 max-w-md rounded-3xl shadow-xl overflow-hidden"
+          initial={{ opacity: 0, x: 30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          <img
+            src="/contact.png"
+            alt="Contact Us"
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+        </motion.div>
+      </div>
+    </div>
+  </section>
+
 
       {/* Contact Form & Info */}
       <section className="py-20">
