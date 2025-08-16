@@ -1,6 +1,8 @@
-import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { Button } from "@/Components/ui/button";
+import { useRef, useEffect } from "react";
+import Globe from "react-globe.gl";
+import * as THREE from "three";
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const stepsPreview = [
@@ -28,63 +30,80 @@ const Home = () => {
       </button>
     );
   }
+ const globeRef = useRef();
 
+  useEffect(() => {
+    if (globeRef.current) {
+      globeRef.current.controls().autoRotate = true;
+      globeRef.current.controls().autoRotateSpeed = 0.8;
+      globeRef.current.pointOfView({ lat: 20, lng: 10, altitude: 2 }, 4000);
+    }
+  }, []);
   return (
-    <div className="min-h-screen">
-     {/* Hero Section */}
-<section
-  className="relative overflow-hidden pt-55"
-  style={{ minHeight: "100vh" }}
->
-  {/* GIF Background */}
-  <div className="absolute inset-0 z-0">
-    <img
-      src="/hero.gif"
-      alt="Background animation"
-      className="w-full h-full object-cover"
-    />
-    {/* Teal Overlay */}
-    <div className="absolute inset-0 bg-gradient-to-br from-[#2E8B9C]/80 via-[#415A77]/80 to-[#9BBEC8]/80"></div>
-  </div>
+       <div className="min-h-screen">
+      {/* Hero Section */}
+      <section
+        className="relative overflow-hidden flex items-center justify-center"
+        style={{ minHeight: "100vh" }}
+      >
+        {/* Globe Background */}
+        <div className="absolute inset-0 z-0">
+          <Globe
+            ref={globeRef}
+            globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
+            bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
+            backgroundColor="rgba(0,0,0,0)"
+          />
+          {/* Teal overlay for readability */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[#2E8B9C]/55 via-[#415A77]/55 to-[#9BBEC8]/70"></div>
+        </div>
 
-  {/* Content */}
-  <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-    <motion.h1
-      className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-6 leading-tight"
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, delay: 0.2 }}
-    >
-      Innovating the Future,{" "}
-      <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#A8DADC] to-[#F1FAEE]">
-        Neatly.
-      </span>
-    </motion.h1>
+        {/* Content */}
+        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.h1
+            className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-6 leading-tight"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            Innovating the Future,{" "}
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#A8DADC] to-[#F1FAEE]">
+              Neatly.
+            </span>
+          </motion.h1>
 
-    <motion.p
-      className="text-lg sm:text-xl lg:text-2xl text-gray-100 mb-12 max-w-3xl mx-auto leading-relaxed"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, delay: 0.4 }}
-    >
-      Neat Technologies is a leading provider of bespoke software solutions,
-      empowering startups and enterprises to transform their digital presence
-      with cutting-edge technology and elegant design.
-    </motion.p>
+          <motion.p
+            className="text-lg sm:text-xl lg:text-2xl text-gray-100 mb-12 max-w-3xl mx-auto leading-relaxed"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            Neat Technologies is a leading provider of bespoke software solutions,
+            empowering startups and enterprises to transform their digital presence
+            with cutting-edge technology and elegant design.
+          </motion.p>
 
-    <div className="flex justify-center gap-6">
-      <Link to="/services">
-        <BigButton>Our Services</BigButton>
-      </Link>
+          <div className="flex justify-center gap-6">
+            <Link to="/services">
+              <button className="px-10 py-4 rounded-xl font-semibold text-lg shadow-md
+                bg-gradient-to-r from-[#A8DADC] to-[#9BBEC8] text-[#1D3557]
+                hover:from-[#9BBEC8] hover:to-[#A8DADC]
+                transition-all duration-300">
+                Our Services
+              </button>
+            </Link>
+            <Link to="/contact">
+              <button className="px-10 py-4 rounded-xl font-semibold text-lg shadow-md
+                bg-transparent border border-[#A8DADC] text-white
+                hover:bg-[#A8DADC] hover:text-[#1D3557]
+                transition-all duration-300">
+                Contact Us
+              </button>
+            </Link>
+          </div>
+        </div>
+      </section>
 
-      <Link to="/contact">
-        <BigButton className="bg-transparent border-[#A8DADC] text-[#1D3557] hover:bg-[#A8DADC]">
-          Contact Us
-        </BigButton>
-      </Link>
-    </div>
-  </div>
-</section>
 
 
       {/* Services Preview Section */}
