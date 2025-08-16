@@ -33,7 +33,7 @@ const Home = () => {
     <div className="min-h-screen">
      {/* Hero Section */}
 <section
-  className="relative overflow-hidden pt-45"
+  className="relative overflow-hidden pt-55"
   style={{ minHeight: "100vh" }}
 >
   {/* GIF Background */}
