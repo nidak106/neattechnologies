@@ -1,48 +1,68 @@
 import { motion } from "framer-motion";
 import { useParams, Link } from "react-router-dom";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Points, PointMaterial, TorusKnot } from "@react-three/drei";
-import * as THREE from "three";
+import { OrbitControls, Points, PointMaterial, Sphere } from "@react-three/drei";
+import { useState, useRef, useMemo } from "react";
 
-// 🎨 Futuristic Three.js Background
-const HeroScene = () => {
-  const particlesCount = 2500;
-  const particles = new Float32Array(particlesCount * 3);
+// Enhanced 3D Background Components
+const FloatingParticles = ({ count = 1000 }) => {
+  const mesh = useRef();
+  const [hovered, setHovered] = useState(false);
 
-  for (let i = 0; i < particlesCount * 3; i++) {
-    particles[i] = (Math.random() - 0.5) * 12; // spread around
-  }
+  const particles = useMemo(() => {
+    const temp = [];
+    for (let i = 0; i < count; i++) {
+      temp.push([
+        (Math.random() - 0.5) * 20,
+        (Math.random() - 0.5) * 20,
+        (Math.random() - 0.5) * 20,
+      ]);
+    }
+    return temp;
+  }, [count]);
 
   return (
-    <Canvas camera={{ position: [0, 0, 6] }}>
-      {/* Lights */}
-      <ambientLight intensity={0.5} />
-      <pointLight position={[5, 5, 5]} intensity={2} color="#00ccff" />
-      <pointLight position={[-5, -5, -5]} intensity={1.5} color="#7700ff" />
+    <Points ref={mesh} positions={particles} stride={3} frustumCulled>
+      <PointMaterial
+        transparent
+        color={hovered ? "#00ffff" : "#ffffff"}
+        size={0.02}
+        sizeAttenuation
+        depthWrite={false}
+      />
+    </Points>
+  );
+};
 
-      {/* Torus Knot (futuristic shape) */}
-      <TorusKnot args={[1.5, 0.4, 256, 64]} rotation={[0.4, 0.2, 0.3]}>
+const ServiceHeroScene = ({ serviceType }) => {
+  const sceneConfig = {
+    "web-development": { color: "#3b82f6", emissive: "#1d4ed8" },
+    "mobile-app": { color: "#10b981", emissive: "#059669" },
+    "cloud-integration": { color: "#8b5cf6", emissive: "#7c3aed" },
+    "ai-automation": { color: "#f59e0b", emissive: "#d97706" }
+  };
+
+  const config = sceneConfig[serviceType] || sceneConfig["web-development"];
+
+  return (
+    <Canvas camera={{ position: [0, 0, 8] }}>
+      <ambientLight intensity={0.3} />
+      <pointLight position={[10, 10, 10]} intensity={1} color={config.color} />
+      <pointLight position={[-10, -10, -10]} intensity={0.5} color={config.emissive} />
+      
+      <Sphere args={[2, 64, 64]} position={[0, 0, 0]}>
         <meshStandardMaterial
-          color={"#00ffff"}
-          emissive={"#00ccff"}
-          emissiveIntensity={1.5}
+          color={config.color}
+          emissive={config.emissive}
+          emissiveIntensity={0.3}
           wireframe
-        />
-      </TorusKnot>
-
-      {/* Floating Particles */}
-      <Points positions={particles} stride={3} frustumCulled>
-        <PointMaterial
           transparent
-          color="#ffffff"
-          size={0.015}
-          sizeAttenuation
-          depthWrite={false}
+          opacity={0.6}
         />
-      </Points>
-
-      {/* Controls */}
-      <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={1.2} />
+      </Sphere>
+      
+      <FloatingParticles count={800} />
+      <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.5} />
     </Canvas>
   );
 };
@@ -53,70 +73,210 @@ const ServiceDetail = () => {
   const serviceData = {
     "web-development": {
       title: "Custom Web Development",
+      subtitle: "Build powerful web applications that scale with your business",
+      hero: "Transform your ideas into high-performance web applications with modern technologies and best practices.",
       icon: "💻",
-      hero:
-        "Build powerful, responsive web applications that drive your business forward with modern technologies and best practices.",
-      features: [
-        { title: "Modern Frontend Development", description: "Using React, Next.js, and other modern frameworks to create fast, interactive user interfaces.", icon: "⚡" },
-        { title: "Robust Backend Solutions", description: "Node.js, Python, and cloud-based backends that scale with your business needs.", icon: "🏗️" },
-        { title: "Database Architecture", description: "Optimized database design and integration for efficient data management.", icon: "🗄️" },
-        { title: "API Development", description: "RESTful and GraphQL APIs that connect your applications seamlessly.", icon: "🔗" },
+      color: "blue",
+      bgGradient: "from-blue-600 via-blue-700 to-indigo-800",
+      highlights: [
+        { 
+          title: "Lightning Fast Performance", 
+          description: "Optimized code and modern frameworks ensure your web app loads instantly and runs smoothly.",
+          icon: "⚡",
+          stat: "3x faster loading"
+        },
+        { 
+          title: "Responsive Design", 
+          description: "Beautiful interfaces that work perfectly on desktop, tablet, and mobile devices.",
+          icon: "📱",
+          stat: "100% mobile ready"
+        },
+        { 
+          title: "Scalable Architecture", 
+          description: "Built to handle growth from hundreds to millions of users without breaking a sweat.",
+          icon: "🚀",
+          stat: "Scales to millions"
+        },
+        { 
+          title: "SEO Optimized", 
+          description: "Search engine friendly code that helps your business get discovered online.",
+          icon: "🔍",
+          stat: "Top search rankings"
+        }
       ],
-      technologies: ["React", "Next.js", "Node.js", "TypeScript", "PostgreSQL", "MongoDB", "AWS", "Docker"],
-      process: ["Discovery & Planning", "UI/UX Design", "Development & Testing", "Deployment & Launch"],
+      steps: [
+        { title: "Discovery & Planning", description: "We analyze your requirements and create a detailed roadmap", icon: "🎯" },
+        { title: "Design & Prototype", description: "Interactive prototypes that bring your vision to life", icon: "🎨" },
+        { title: "Development & Testing", description: "Clean, maintainable code with comprehensive testing", icon: "⚙️" },
+        { title: "Launch & Support", description: "Smooth deployment with ongoing maintenance and updates", icon: "🚀" }
+      ],
+      testimonials: [
+        { name: "Sarah Chen", role: "CEO, TechStart", quote: "Our web app increased user engagement by 300% after the redesign.", avatar: "https://i.pravatar.cc/100?img=1" },
+        { name: "Mike Rodriguez", role: "CTO, GrowthCo", quote: "The performance improvements were incredible. Page load times dropped by 70%.", avatar: "https://i.pravatar.cc/100?img=2" }
+      ],
+      stats: [
+        { number: "50+", label: "Web Apps Built" },
+        { number: "99.9%", label: "Uptime Guarantee" },
+        { number: "2.5s", label: "Avg Load Time" }
+      ]
     },
     "mobile-app": {
       title: "Mobile App Solutions",
+      subtitle: "Native and cross-platform apps that users love",
+      hero: "Create exceptional mobile experiences that engage users and drive business growth across iOS and Android.",
       icon: "📱",
-      hero:
-        "Create exceptional mobile experiences that engage users and drive business growth across iOS and Android platforms.",
-      features: [
-        { title: "Cross-Platform Development", description: "React Native and Flutter apps that work seamlessly across iOS and Android.", icon: "📱" },
-        { title: "Native Performance", description: "Optimized code ensuring smooth performance and native feel.", icon: "⚡" },
-        { title: "App Store Optimization", description: "Complete deployment and optimization for App Store and Google Play.", icon: "🚀" },
-        { title: "Backend Integration", description: "Seamless integration with existing systems and cloud services.", icon: "🔄" },
+      color: "emerald",
+      bgGradient: "from-emerald-600 via-teal-700 to-cyan-800",
+      highlights: [
+        { 
+          title: "Cross-Platform Excellence", 
+          description: "One codebase, two platforms. Save time and money while reaching all your users.",
+          icon: "🔄",
+          stat: "50% faster delivery"
+        },
+        { 
+          title: "Native Performance", 
+          description: "Smooth animations and responsive interactions that feel truly native.",
+          icon: "⚡",
+          stat: "60fps animations"
+        },
+        { 
+          title: "Offline Capabilities", 
+          description: "Your app works even without internet connection, syncing when back online.",
+          icon: "📶",
+          stat: "100% offline ready"
+        },
+        { 
+          title: "App Store Success", 
+          description: "Optimized for app store approval and featuring to maximize downloads.",
+          icon: "⭐",
+          stat: "98% approval rate"
+        }
       ],
-      technologies: ["React Native", "Flutter", "Swift", "Kotlin", "Firebase", "Redux", "Push Notifications", "Analytics"],
-      process: ["Concept & Strategy", "Design & Prototyping", "Development & Testing", "App Store Deployment"],
+      steps: [
+        { title: "Strategy & Research", description: "Market analysis and user research to define your app's success", icon: "📊" },
+        { title: "UX/UI Design", description: "Intuitive designs that users love and understand instantly", icon: "🎨" },
+        { title: "Development & Testing", description: "Robust development with real device testing across platforms", icon: "📱" },
+        { title: "Launch & Growth", description: "App store optimization and post-launch growth strategies", icon: "🚀" }
+      ],
+      testimonials: [
+        { name: "Jessica Park", role: "Founder, FitLife", quote: "Our app hit 100K downloads in the first month. The UX is incredible.", avatar: "https://i.pravatar.cc/100?img=3" },
+        { name: "David Kim", role: "Product Manager, ShopEasy", quote: "Users love how smooth and fast the app feels. 5-star reviews keep coming.", avatar: "https://i.pravatar.cc/100?img=4" }
+      ],
+      stats: [
+        { number: "30+", label: "Apps Published" },
+        { number: "4.8★", label: "Avg App Rating" },
+        { number: "2M+", label: "Total Downloads" }
+      ]
     },
     "cloud-integration": {
       title: "Cloud Integration",
+      subtitle: "Scalable infrastructure that grows with your business",
+      hero: "Leverage the power of cloud computing to scale your applications and optimize performance with enterprise-grade solutions.",
       icon: "☁️",
-      hero:
-        "Leverage the power of cloud computing to scale your applications and optimize performance with enterprise-grade solutions.",
-      features: [
-        { title: "Cloud Migration", description: "Seamless migration of existing applications to AWS, Azure, or Google Cloud.", icon: "🚀" },
-        { title: "Serverless Architecture", description: "Cost-effective, auto-scaling serverless solutions that adapt to demand.", icon: "⚡" },
-        { title: "Container Orchestration", description: "Docker and Kubernetes deployment for enhanced scalability and management.", icon: "🐳" },
-        { title: "Security & Compliance", description: "Enterprise-grade security measures and compliance with industry standards.", icon: "🛡️" },
+      color: "purple",
+      bgGradient: "from-purple-600 via-violet-700 to-indigo-800",
+      highlights: [
+        { 
+          title: "Auto-Scaling Infrastructure", 
+          description: "Your applications automatically scale up or down based on demand, saving costs.",
+          icon: "📈",
+          stat: "Auto-scales instantly"
+        },
+        { 
+          title: "99.99% Uptime", 
+          description: "Enterprise-grade reliability with redundancy and failover protection.",
+          icon: "🛡️",
+          stat: "99.99% uptime SLA"
+        },
+        { 
+          title: "Global CDN", 
+          description: "Lightning-fast content delivery worldwide with edge caching.",
+          icon: "🌍",
+          stat: "Global reach"
+        },
+        { 
+          title: "Cost Optimization", 
+          description: "Pay only for what you use with intelligent resource management.",
+          icon: "💰",
+          stat: "40% cost savings"
+        }
       ],
-      technologies: ["AWS", "Azure", "Google Cloud", "Docker", "Kubernetes", "Terraform", "CI/CD", "Monitoring"],
-      process: ["Cloud Assessment", "Migration Planning", "Implementation", "Optimization & Monitoring"],
+      steps: [
+        { title: "Infrastructure Audit", description: "Comprehensive analysis of your current setup and requirements", icon: "🔍" },
+        { title: "Migration Strategy", description: "Detailed plan for seamless transition to cloud infrastructure", icon: "📋" },
+        { title: "Implementation", description: "Careful migration with zero downtime and full data integrity", icon: "⚙️" },
+        { title: "Optimization", description: "Ongoing monitoring and optimization for peak performance", icon: "📊" }
+      ],
+      testimonials: [
+        { name: "Robert Chen", role: "CTO, DataFlow", quote: "Migration was seamless. Our costs dropped 40% while performance improved.", avatar: "https://i.pravatar.cc/100?img=5" },
+        { name: "Lisa Wang", role: "DevOps Lead, ScaleTech", quote: "The auto-scaling saved us during our viral launch. No downtime at all.", avatar: "https://i.pravatar.cc/100?img=6" }
+      ],
+      stats: [
+        { number: "100+", label: "Cloud Migrations" },
+        { number: "40%", label: "Avg Cost Reduction" },
+        { number: "24/7", label: "Monitoring" }
+      ]
     },
     "ai-automation": {
       title: "AI & Automation",
+      subtitle: "Intelligent solutions that work while you sleep",
+      hero: "Transform your business processes with intelligent automation and AI-powered solutions that drive efficiency and innovation.",
       icon: "🤖",
-      hero:
-        "Transform your business processes with intelligent automation and AI-powered solutions that drive efficiency and innovation.",
-      features: [
-        { title: "Process Automation", description: "Automated workflows that reduce manual tasks and improve efficiency.", icon: "⚙️" },
-        { title: "Machine Learning Models", description: "Custom ML models for predictive analytics and intelligent insights.", icon: "🧠" },
-        { title: "Chatbots & Virtual Assistants", description: "AI-powered customer service solutions that work 24/7.", icon: "💬" },
-        { title: "Data Analytics", description: "Advanced analytics and reporting for data-driven decision making.", icon: "📊" },
+      color: "amber",
+      bgGradient: "from-amber-600 via-orange-700 to-red-800",
+      highlights: [
+        { 
+          title: "Process Automation", 
+          description: "Eliminate repetitive tasks and free your team to focus on high-value work.",
+          icon: "⚙️",
+          stat: "80% time savings"
+        },
+        { 
+          title: "Intelligent Insights", 
+          description: "AI-powered analytics that reveal hidden patterns in your data.",
+          icon: "🧠",
+          stat: "Predictive accuracy"
+        },
+        { 
+          title: "24/7 AI Assistants", 
+          description: "Smart chatbots and virtual assistants that never sleep.",
+          icon: "💬",
+          stat: "Round-the-clock service"
+        },
+        { 
+          title: "Custom ML Models", 
+          description: "Tailored machine learning solutions for your specific business needs.",
+          icon: "🎯",
+          stat: "Custom-built AI"
+        }
       ],
-      technologies: ["Python", "TensorFlow", "PyTorch", "OpenAI", "Natural Language Processing", "Computer Vision", "RPA", "Analytics"],
-      process: ["Use Case Analysis", "Data Preparation", "Model Development", "Integration & Deployment"],
-    },
+      steps: [
+        { title: "Process Analysis", description: "Identify automation opportunities and potential ROI", icon: "🔍" },
+        { title: "AI Strategy", description: "Design intelligent solutions tailored to your workflows", icon: "🧠" },
+        { title: "Development & Training", description: "Build and train AI models with your specific data", icon: "⚙️" },
+        { title: "Integration & Scaling", description: "Seamless integration with monitoring and continuous improvement", icon: "📈" }
+      ],
+      testimonials: [
+        { name: "Amanda Foster", role: "Operations Director, AutoCorp", quote: "AI automation reduced our processing time by 80%. Game-changing results.", avatar: "https://i.pravatar.cc/100?img=7" },
+        { name: "James Liu", role: "CEO, SmartLogistics", quote: "The predictive analytics helped us reduce costs by $2M annually.", avatar: "https://i.pravatar.cc/100?img=8" }
+      ],
+      stats: [
+        { number: "25+", label: "AI Solutions Built" },
+        { number: "80%", label: "Avg Time Savings" },
+        { number: "$2M+", label: "Client Savings" }
+      ]
+    }
   };
 
   const service = serviceData[serviceType];
 
   if (!service) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-extrabold text-text mb-4">Service Not Found</h1>
-          <Link to="/services" className="text-primary hover:underline font-semibold">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Service Not Found</h1>
+          <Link to="/services" className="text-blue-600 hover:underline font-semibold">
             Back to Services
           </Link>
         </div>
@@ -125,145 +285,253 @@ const ServiceDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background text-text">
-      {/* Hero Section with Futuristic 3D Background */}
-      <section className="relative h-[500px] flex items-center justify-center overflow-hidden">
-        <HeroScene />
-        <div className="absolute inset-0 bg-gradient-to-b from-teal-00/80 via-cyan-700/70 to-black/90 flex flex-col items-center justify-center text-center px-4">
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0">
+          <ServiceHeroScene serviceType={serviceType} />
+        </div>
+        <div className={`absolute inset-0 bg-gradient-to-br ${service.bgGradient} opacity-80`}></div>
+        
+        <div className="relative z-10 text-center text-white px-4 max-w-5xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-white"
           >
-            <div className="text-8xl mb-6 drop-shadow-lg">{service.icon}</div>
-            <h1 className="text-4xl lg:text-5xl font-extrabold mb-6 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent drop-shadow-lg">
+            <div className="text-8xl mb-8 drop-shadow-lg">{service.icon}</div>
+            <h1 className="text-5xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent">
               {service.title}
             </h1>
-            <p className="text-xl max-w-3xl mx-auto leading-relaxed text-gray-200">
+            <p className="text-2xl lg:text-3xl mb-8 text-gray-100 font-light">
+              {service.subtitle}
+            </p>
+            <p className="text-xl mb-12 text-gray-200 max-w-3xl mx-auto leading-relaxed">
               {service.hero}
             </p>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+              <Link to="/contact">
+                <motion.button
+                  className="bg-white text-gray-900 px-10 py-4 rounded-full font-bold text-lg shadow-xl hover:shadow-2xl transition-all duration-300"
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  Start Your Project
+                </motion.button>
+              </Link>
+              <motion.button
+                className="border-2 border-white text-white px-10 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-gray-900 transition-all duration-300"
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => document.getElementById('highlights').scrollIntoView({ behavior: 'smooth' })}
+              >
+                Learn More
+              </motion.button>
+            </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Content Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          {/* Left Column */}
-          <div className="lg:col-span-2">
-            <motion.h2
-              className="text-3xl font-extrabold text-text text-center mb-12"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              Key Features & Benefits
-            </motion.h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-              {service.features.map((feature, index) => (
+      {/* Service Highlights */}
+      <section id="highlights" className="py-24 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            className="text-center mb-20"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+              Why Choose Our {service.title}?
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Discover the key benefits that make our solution the perfect choice for your business.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {service.highlights.map((highlight, index) => (
+              <motion.div
+                key={index}
+                className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 text-center group"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                whileHover={{ y: -8, scale: 1.02 }}
+              >
+                <div className="text-5xl mb-6 group-hover:scale-110 transition-transform duration-300">
+                  {highlight.icon}
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">{highlight.title}</h3>
+                <p className="text-gray-600 mb-4 leading-relaxed">{highlight.description}</p>
+                <div className={`text-sm font-bold text-${service.color}-600 bg-${service.color}-50 px-3 py-1 rounded-full inline-block`}>
+                  {highlight.stat}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works */}
+      <section className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            className="text-center mb-20"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+              How We Deliver Results
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Our proven process ensures successful outcomes every time.
+            </p>
+          </motion.div>
+
+          <div className="relative">
+            {/* Connection Line */}
+            <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 transform -translate-y-1/2"></div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
+              {service.steps.map((step, index) => (
                 <motion.div
                   key={index}
-                  className="bg-white rounded-xl shadow-lg  overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-2"
-                  initial={{ opacity: 0, y: 30 }}
+                  className="relative text-center"
+                  initial={{ opacity: 0, y: 50 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: index * 0.2 }}
                 >
-                  <div className="p-6">
-                    <div className="text-3xl mb-3">{feature.icon}</div>
-                    <h3 className="text-xl font-semibold text-text mb-2">{feature.title}</h3>
-                    <p className="text-gray-500 leading-relaxed">{feature.description}</p>
+                  <div className={`w-20 h-20 bg-gradient-to-br from-${service.color}-500 to-${service.color}-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg relative z-10`}>
+                    <span className="text-3xl">{step.icon}</span>
                   </div>
+                  <div className={`absolute top-8 left-1/2 transform -translate-x-1/2 w-8 h-8 bg-${service.color}-100 rounded-full flex items-center justify-center text-sm font-bold text-${service.color}-600`}>
+                    {index + 1}
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">{step.title}</h3>
+                  <p className="text-gray-600 leading-relaxed">{step.description}</p>
                 </motion.div>
               ))}
             </div>
           </div>
+        </div>
+      </section>
 
-          {/* Right Column */}
-          <div>
-            <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
-              <motion.h2
-                className="text-2xl font-extrabold text-text text-center mb-8"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-              >
-                Our Process
-              </motion.h2>
-              <div className="flex flex-col gap-4">
-                {service.process.map((step, index) => (
-                  <motion.div
-                    key={index}
-                    className="flex items-center gap-4"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: index * 0.2 }}
-                  >
-                    <span className="bg-primary text-white w-8 h-8 rounded-full flex items-center justify-center font-bold">
-                      {index + 1}
-                    </span>
-                    <h3 className="text-lg font-semibold text-text">{step}</h3>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
+      {/* Proof/Trust Section */}
+      <section className="py-24 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            className="text-center mb-20"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+              Trusted by Industry Leaders
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              See what our clients say about working with us.
+            </p>
+          </motion.div>
 
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <motion.h2
-                className="text-2xl font-extrabold text-black text-center mb-8"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+          {/* Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+            {service.stats.map((stat, index) => (
+              <motion.div
+                key={index}
+                className="text-center bg-white rounded-2xl p-8 shadow-lg"
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
               >
-                Technologies We Use
-              </motion.h2>
-              <div className="flex flex-wrap justify-center gap-4">
-                {service.technologies.map((tech, index) => (
-                  <motion.span
-                    key={index}
-                    className="px-4 py-2 bg-gray-100  text-gray-600 rounded-full  font-semibold cursor-pointer transition hover:bg-gray-200"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                  >
-                    {tech}
-                  </motion.span>
-                ))}
-              </div>
-            </div>
+                <div className={`text-4xl lg:text-5xl font-bold text-${service.color}-600 mb-2`}>
+                  {stat.number}
+                </div>
+                <div className="text-gray-600 font-medium">{stat.label}</div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Testimonials */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {service.testimonials.map((testimonial, index) => (
+              <motion.div
+                key={index}
+                className="bg-white rounded-2xl p-8 shadow-lg"
+                initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.2 }}
+              >
+                <div className="flex items-center mb-6">
+                  <img
+                    src={testimonial.avatar}
+                    alt={testimonial.name}
+                    className="w-16 h-16 rounded-full mr-4"
+                  />
+                  <div>
+                    <h4 className="font-bold text-gray-900">{testimonial.name}</h4>
+                    <p className="text-gray-600">{testimonial.role}</p>
+                  </div>
+                </div>
+                <p className="text-gray-700 text-lg leading-relaxed italic">
+                  "{testimonial.quote}"
+                </p>
+              </motion.div>
+            ))}
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-teal-100 to-cyan-900 text-center text-white">
-        <motion.h2
-          className="text-3xl font-extrabold mb-4"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          Ready to Get Started?
-        </motion.h2>
-        <p className="mb-8 max-w-2xl mx-auto text-xl text-gray-200">
-          Let's discuss how our {service.title.toLowerCase()} can help transform your business.
-        </p>
-        <Link to="/contact">
-          <motion.button
-            className="bg-accent text-gray-500 px-8 py-4 rounded-full font-semibold text-lg hover:bg-secondary transition"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+      {/* Final CTA */}
+      <section className={`py-24 bg-gradient-to-br ${service.bgGradient} text-white relative overflow-hidden`}>
+        <div className="absolute inset-0 opacity-10">
+          <ServiceHeroScene serviceType={serviceType} />
+        </div>
+        <div className="relative z-10 max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
           >
-            Start Your Project
-          </motion.button>
-        </Link>
+            <div className="text-6xl mb-8">{service.icon}</div>
+            <h2 className="text-4xl lg:text-5xl font-bold mb-6">
+              Ready to Transform Your Business?
+            </h2>
+            <p className="text-xl mb-12 text-gray-100 max-w-2xl mx-auto leading-relaxed">
+              Join hundreds of successful companies who chose our {service.title.toLowerCase()} solutions. 
+              Let's discuss how we can help you achieve your goals.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+              <Link to="/contact">
+                <motion.button
+                  className="bg-white text-gray-900 px-12 py-4 rounded-full font-bold text-lg shadow-xl hover:shadow-2xl transition-all duration-300"
+                  whileHover={{ scale: 1.05, y: -3 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  Get Started Today
+                </motion.button>
+              </Link>
+              <Link to="/services">
+                <motion.button
+                  className="border-2 border-white text-white px-12 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-gray-900 transition-all duration-300"
+                  whileHover={{ scale: 1.05, y: -3 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  View All Services
+                </motion.button>
+              </Link>
+            </div>
+          </motion.div>
+        </div>
       </section>
     </div>
   );

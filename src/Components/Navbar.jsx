@@ -4,10 +4,30 @@ import { motion, AnimatePresence } from 'framer-motion';
 import useStore from '../Store/UseStore';
 
 const services = [
-  { name: 'Custom Web Development', path: '/services/web-development' },
-  { name: 'Mobile App Solutions', path: '/services/mobile-app' },
-  { name: 'Cloud Integration', path: '/services/cloud-integration' },
-  { name: 'AI & Automation', path: '/services/ai-automation' }
+  { 
+    name: 'Custom Web Development', 
+    path: '/services/web-development',
+    icon: '💻',
+    tagline: 'Modern web apps that scale'
+  },
+  { 
+    name: 'Mobile App Solutions', 
+    path: '/services/mobile-app',
+    icon: '📱',
+    tagline: 'Native & cross-platform apps'
+  },
+  { 
+    name: 'Cloud Integration', 
+    path: '/services/cloud-integration',
+    icon: '☁️',
+    tagline: 'Scalable cloud infrastructure'
+  },
+  { 
+    name: 'AI & Automation', 
+    path: '/services/ai-automation',
+    icon: '🤖',
+    tagline: 'Intelligent process automation'
+  }
 ];
 
 const products = [
@@ -197,25 +217,54 @@ const Navbar = () => {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -10, scale: 0.95 }}
                     transition={{ duration: 0.2 }}
-                    className="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50"
+                    className="absolute top-full left-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-gray-100 py-3 z-50"
                   >
                     {services.map((service) => (
-                      <Link
+                      <motion.div
                         key={service.path}
-                        to={service.path}
-                        onClick={() => typeof setServicesDropdown === 'function' && setServicesDropdown(false)}
-                        className="block px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors duration-200"
+                        whileHover={{ scale: 1.02, x: 4 }}
+                        transition={{ duration: 0.2 }}
                       >
-                        {service.name}
-                      </Link>
+                        <Link
+                          to={service.path}
+                          onClick={() => typeof setServicesDropdown === 'function' && setServicesDropdown(false)}
+                          className="flex items-center px-4 py-4 text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 hover:shadow-sm rounded-lg mx-2 transition-all duration-200 group"
+                        >
+                          <div className="text-2xl mr-4 group-hover:scale-110 transition-transform duration-200">
+                            {service.icon}
+                          </div>
+                          <div className="flex-1">
+                            <div className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-200">
+                              {service.name}
+                            </div>
+                            <div className="text-sm text-gray-500 group-hover:text-gray-600 transition-colors duration-200">
+                              {service.tagline}
+                            </div>
+                          </div>
+                          <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                            <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            </svg>
+                          </div>
+                        </Link>
+                      </motion.div>
                     ))}
-                    <Link
-                      to="/services"
-                      onClick={() => typeof setServicesDropdown === 'function' && setServicesDropdown(false)}
-                      className="block px-4 py-3 text-sm font-medium text-primary-600 border-t border-gray-100 mt-2 hover:bg-primary-50 transition-colors duration-200"
+                    <motion.div
+                      className="border-t border-gray-100 mt-2 pt-2"
+                      whileHover={{ scale: 1.02 }}
+                      transition={{ duration: 0.2 }}
                     >
-                      View All Services
-                    </Link>
+                      <Link
+                        to="/services"
+                        onClick={() => typeof setServicesDropdown === 'function' && setServicesDropdown(false)}
+                        className="flex items-center justify-center px-4 py-3 mx-2 text-sm font-semibold text-blue-600 bg-gradient-to-r from-blue-50 to-purple-50 hover:from-blue-100 hover:to-purple-100 rounded-lg transition-all duration-200"
+                      >
+                        View All Services
+                        <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                      </Link>
+                    </motion.div>
                   </motion.div>
                 )}
               </AnimatePresence>
