@@ -1,6 +1,3 @@
-import { useRef, useEffect } from "react";
-import Globe from "react-globe.gl";
-import * as THREE from "three";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
@@ -30,165 +27,110 @@ const Home = () => {
       </button>
     );
   }
- const globeRef = useRef();
 
-  useEffect(() => {
-    if (globeRef.current) {
-      globeRef.current.controls().autoRotate = true;
-      globeRef.current.controls().autoRotateSpeed = 0.8;
-      globeRef.current.pointOfView({ lat: 20, lng: 10, altitude: 2 }, 4000);
-    }
-  }, []);
   return (
-       <div className="min-h-screen">
-      {/* Hero Section */}
-      <section
-        className="relative overflow-hidden flex items-center justify-center"
-        style={{ minHeight: "100vh" }}
-      >
-        {/* Globe Background */}
-        <div className="absolute inset-0 z-0">
-          <Globe
-            ref={globeRef}
-            globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
-            bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
-            backgroundColor="rgba(0,0,0,0)"
-          />
-          {/* Teal overlay for readability */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#2E8B9C]/55 via-[#415A77]/55 to-[#9BBEC8]/70"></div>
-        </div>
+    <div className="min-h-screen ">
+   {/* Hero Section */}
+<section
+  className="relative flex flex-col items-center justify-center bg-cover bg-center bg-no-repeat pt-26" 
+  style={{
+    minHeight: "120vh", 
+    backgroundImage:
+      "url('/background.png')",
+  }}
+>
+  {/* Overlay */}
+  <div className="absolute inset-0 bg-black/20"></div>
 
-        {/* Content */}
-        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.h1
-            className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-6 leading-tight"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            Innovating the Future,{" "}
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#A8DADC] to-[#F1FAEE]">
-              Neatly.
-            </span>
-          </motion.h1>
+  {/* Content */}
+  <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
+    <motion.h1
+      className="text-4xl sm:text-6xl lg:text-7xl font-bold text-white mb-10 leading-tight drop-shadow-lg"
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.2 }}
+    >
+      Innovating the Future,{" "}
+      <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#A8DADC] to-[#F1FAEE]">
+        Neatly.
+      </span>
+    </motion.h1>
 
-          <motion.p
-            className="text-lg sm:text-xl lg:text-2xl text-gray-100 mb-12 max-w-3xl mx-auto leading-relaxed"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
-            Neat Technologies is a leading provider of bespoke software solutions,
-            empowering startups and enterprises to transform their digital presence
-            with cutting-edge technology and elegant design.
-          </motion.p>
+    <motion.p
+      className="text-lg sm:text-xl lg:text-2xl text-white mb-12 max-w-2xl mx-auto leading-relaxed drop-shadow-md"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.4 }}
+    >
+      Neat Technologies is a leading provider of bespoke software solutions,
+      empowering startups and enterprises to transform their digital presence
+      with cutting-edge technology and elegant design.
+    </motion.p>
 
-          <div className="flex justify-center gap-6">
-            <Link to="/services">
-              <button className="px-10 py-4 rounded-xl font-semibold text-lg shadow-md
-                bg-gradient-to-r from-[#A8DADC] to-[#9BBEC8] text-[#1D3557]
-                hover:from-[#9BBEC8] hover:to-[#A8DADC]
-                transition-all duration-300">
-                Our Services
-              </button>
-            </Link>
-            <Link to="/contact">
-              <button className="px-10 py-4 rounded-xl font-semibold text-lg shadow-md
-                bg-transparent border border-[#A8DADC] text-white
-                hover:bg-[#A8DADC] hover:text-[#1D3557]
-                transition-all duration-300">
-                Contact Us
-              </button>
-            </Link>
-          </div>
-        </div>
-      </section>
+    {/* Buttons */}
+    <div className="flex justify-center gap-6 mb-20">
+      <Link to="/services">
+        <button
+          className="px-10 py-4 rounded-xl font-semibold text-lg shadow-md
+          bg-gradient-to-r from-[#A8DADC] to-[#9BBEC8] text-[#1F5D6F]
+          hover:from-[#9BBEC8] hover:to-[#A8DADC]
+          transition-all duration-300"
+        >
+          Our Services
+        </button>
+      </Link>
+      <Link to="/contact">
+        <button
+          className="px-10 py-4 rounded-xl font-semibold text-lg shadow-md
+          bg-transparent border border-[#A8DADC] text-[#1F5D6F]
+          hover:bg-[#A8DADC] hover:text-[#1D3557]
+          transition-all duration-300"
+        >
+          Contact Us
+        </button>
+      </Link>
+    </div>
 
+    {/* Services Cards inside Hero */}
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 ">
+      {[
+        {
+          icon: "💻",
+          title: "Custom Web Development",
+          description:
+            "Build powerful, responsive web applications tailored to your business needs.",
+        },
+        {
+          icon: "📱",
+          title: "Mobile App Solutions",
+          description:
+            "Create native and cross-platform apps delivering exceptional user experiences.",
+        },
+        {
+          icon: "☁️",
+          title: "Cloud Integration",
+          description:
+            "Seamlessly migrate to the cloud for scalable, high-performance infrastructure.",
+        },
+      ].map(({ icon, title, description }, idx) => (
+        <motion.div
+          key={idx}
+          className="bg-white/90 backdrop-blur-md rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: idx * 0.2 }}
+        >
+          <div className="text-5xl text-[#2E8B9C] mb-4">{icon}</div>
+          <h3 className="text-2xl font-semibold text-[#1D3557] mb-3">
+            {title}
+          </h3>
+          <p className="text-gray-700 leading-relaxed">{description}</p>
+        </motion.div>
+      ))}
+    </div>
+  </div>
+</section>
 
-
-      {/* Services Preview Section */}
-      <section className="py-24 bg-white relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#EAF6F9] to-transparent"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <motion.div
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-3xl font-bold text-[#2E8B9C] mb-4">
-              Our Services
-            </h2>
-            <p className="text-lg text-gray-700 max-w-2xl mx-auto">
-              Explore some of our key offerings designed to accelerate your
-              business growth.
-            </p>
-          </motion.div>
-
-          {/* Alternating cards */}
-          <div className="space-y-16">
-            {[
-              {
-                icon: "💻",
-                title: "Custom Web Development",
-                description:
-                  "Build powerful, responsive web applications tailored to your business needs.",
-              },
-              {
-                icon: "📱",
-                title: "Mobile App Solutions",
-                description:
-                  "Create native and cross-platform apps delivering exceptional user experiences.",
-              },
-              {
-                icon: "☁️",
-                title: "Cloud Integration",
-                description:
-                  "Seamlessly migrate to the cloud for scalable, high-performance infrastructure.",
-              },
-            ].map(({ icon, title, description }, idx) => (
-              <motion.div
-                key={idx}
-                className={`flex flex-col md:flex-row items-center gap-10 ${
-                  idx % 2 === 1 ? "md:flex-row-reverse" : ""
-                }`}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: idx * 0.2 }}
-              >
-                <div className="flex-shrink-0 text-6xl text-[#2E8B9C]">
-                  {icon}
-                </div>
-                <div className="bg-gradient-to-br from-white to-[#F9FCFD] rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow flex-1">
-                  <h3 className="text-2xl font-semibold text-[#1D3557] mb-3">
-                    {title}
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    {description}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          <div className="text-center mt-16">
-            <Link to="/services">
-              {/* <motion.button
-                className="bg-[#2E8B9C] text-white px-10 py-4 rounded-full font-semibold text-lg hover:bg-[#1F6B7A] transition-colors duration-200 shadow-lg"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                View All Services
-              </motion.button> */}
-              <BigButton>
-                View All Services
-              </BigButton>
-            </Link>
-          </div>
-        </div>
-      </section>
 
       {/* Client Reviews */}
       <section className="py-24 bg-[#F7FAFC]">

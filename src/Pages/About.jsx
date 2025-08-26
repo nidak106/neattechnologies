@@ -74,10 +74,10 @@ const About = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
       >
-        About Us
+        
       </motion.h1>
 
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-30 mt-40">
   <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
     {/* Left: Story */}
     <div>
@@ -224,7 +224,7 @@ const About = () => {
        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               { name: "Nida Khan", role: "Chief Technology Officer", expertise: "Full-stack Development" },
-              { name: "Zulqarnain ", role: "Head of Design", expertise: "UI/UX Design" },
+              { name: "Zulqarnain ", role: "Head of Design", expertise: "Dev Ops Engineer" },
               { name: "Basit", role: "Senior Developer", expertise: "Mobile & Cloud Solutions" }
             ].map((member, index) => (
               <motion.div
@@ -236,7 +236,7 @@ const About = () => {
                 transition={{ duration: 0.6, delay: index * 0.2 }}
                 whileHover={{ y: -5 }}
               >
-                <div className="w-24 h-24 bg-[#C9E4E7] rounded-full mx-auto mb-4 flex items-center justify-center">
+                <div className="w-22 h-22 bg-[#C9E4E7] rounded-full mx-auto mb-4 flex items-center justify-center">
                   <span className="text-2xl">👤</span>
                 </div>
                 <h3 className="text-xl font-semibold text-[#415A77] mb-2">{member.name}</h3>

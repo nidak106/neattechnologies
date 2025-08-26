@@ -77,14 +77,14 @@ const Navbar = () => {
   };
 
   return (
-    <motion.nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-transparent'
-      }`}
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
-    >
+  <motion.nav
+  className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+    scrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-transparent'
+  }`}
+  initial={{ y: -100 }}
+  animate={{ y: 0 }}
+  transition={{ duration: 0.6, ease: 'easeOut' }}
+>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Left: Logo & Company Name */}
@@ -93,15 +93,15 @@ const Navbar = () => {
               src="/logo.png"
               alt="NeatTech Logo"
               className="h-15 w-15 object-contain"
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.2 }}
+              // whileHover={{ scale: 1.05 }}
+              // transition={{ duration: 0.2 }}
             />
             <motion.div
               className={`text-2xl font-bold transition-colors duration-300 ${
                 showWhite ? 'text-white' : 'text-gray-900'
               }`}
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.2 }}
+              // whileHover={{ scale: 1.05 }}
+              // transition={{ duration: 0.2 }}
             >
               NeatNode<span className={showWhite ? 'text-black' : 'text-[#2E8B9C]'}> Technologies</span>
             </motion.div>
