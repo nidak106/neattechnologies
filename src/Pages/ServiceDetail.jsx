@@ -1,71 +1,6 @@
 import { motion } from "framer-motion";
 import { useParams, Link } from "react-router-dom";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Points, PointMaterial, Sphere } from "@react-three/drei";
-import { useState, useRef, useMemo } from "react";
-
-// Enhanced 3D Background Components
-const FloatingParticles = ({ count = 1000 }) => {
-  const mesh = useRef();
-  const [hovered, setHovered] = useState(false);
-
-  const particles = useMemo(() => {
-    const temp = [];
-    for (let i = 0; i < count; i++) {
-      temp.push([
-        (Math.random() - 0.5) * 20,
-        (Math.random() - 0.5) * 20,
-        (Math.random() - 0.5) * 20,
-      ]);
-    }
-    return temp;
-  }, [count]);
-
-  return (
-    <Points ref={mesh} positions={particles} stride={3} frustumCulled>
-      <PointMaterial
-        transparent
-        color={hovered ? "#00ffff" : "#ffffff"}
-        size={0.02}
-        sizeAttenuation
-        depthWrite={false}
-      />
-    </Points>
-  );
-};
-
-const ServiceHeroScene = ({ serviceType }) => {
-  const sceneConfig = {
-    "web-development": { color: "#3b82f6", emissive: "#1d4ed8" },
-    "mobile-app": { color: "#10b981", emissive: "#059669" },
-    "cloud-integration": { color: "#8b5cf6", emissive: "#7c3aed" },
-    "ai-automation": { color: "#f59e0b", emissive: "#d97706" }
-  };
-
-  const config = sceneConfig[serviceType] || sceneConfig["web-development"];
-
-  return (
-    <Canvas camera={{ position: [0, 0, 8] }}>
-      <ambientLight intensity={0.3} />
-      <pointLight position={[10, 10, 10]} intensity={1} color={config.color} />
-      <pointLight position={[-10, -10, -10]} intensity={0.5} color={config.emissive} />
-      
-      <Sphere args={[2, 64, 64]} position={[0, 0, 0]}>
-        <meshStandardMaterial
-          color={config.color}
-          emissive={config.emissive}
-          emissiveIntensity={0.3}
-          wireframe
-          transparent
-          opacity={0.6}
-        />
-      </Sphere>
-      
-      <FloatingParticles count={800} />
-      <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.5} />
-    </Canvas>
-  );
-};
+import { useState } from "react";
 
 const ServiceDetail = () => {
   const { serviceType } = useParams();
@@ -78,6 +13,10 @@ const ServiceDetail = () => {
       icon: "💻",
       color: "blue",
       bgGradient: "from-blue-600 via-blue-700 to-indigo-800",
+      accentColor: "bg-blue-600",
+      lightAccent: "bg-blue-50",
+      textAccent: "text-blue-600",
+      borderAccent: "border-blue-600",
       highlights: [
         { 
           title: "Lightning Fast Performance", 
@@ -127,6 +66,10 @@ const ServiceDetail = () => {
       icon: "📱",
       color: "emerald",
       bgGradient: "from-emerald-600 via-teal-700 to-cyan-800",
+      accentColor: "bg-emerald-600",
+      lightAccent: "bg-emerald-50",
+      textAccent: "text-emerald-600",
+      borderAccent: "border-emerald-600",
       highlights: [
         { 
           title: "Cross-Platform Excellence", 
@@ -176,6 +119,10 @@ const ServiceDetail = () => {
       icon: "☁️",
       color: "purple",
       bgGradient: "from-purple-600 via-violet-700 to-indigo-800",
+      accentColor: "bg-purple-600",
+      lightAccent: "bg-purple-50",
+      textAccent: "text-purple-600",
+      borderAccent: "border-purple-600",
       highlights: [
         { 
           title: "Auto-Scaling Infrastructure", 
@@ -225,6 +172,10 @@ const ServiceDetail = () => {
       icon: "🤖",
       color: "amber",
       bgGradient: "from-amber-600 via-orange-700 to-red-800",
+      accentColor: "bg-amber-600",
+      lightAccent: "bg-amber-50",
+      textAccent: "text-amber-600",
+      borderAccent: "border-amber-600",
       highlights: [
         { 
           title: "Process Automation", 
@@ -287,48 +238,126 @@ const ServiceDetail = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0">
-          <ServiceHeroScene serviceType={serviceType} />
-        </div>
-        <div className={`absolute inset-0 bg-gradient-to-br ${service.bgGradient} opacity-80`}></div>
-        
-        <div className="relative z-10 text-center text-white px-4 max-w-5xl mx-auto">
+      <section className={`relative py-32 bg-gradient-to-br ${service.bgGradient} text-white overflow-hidden`}>
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0 overflow-hidden">
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <div className="text-8xl mb-8 drop-shadow-lg">{service.icon}</div>
-            <h1 className="text-5xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent">
-              {service.title}
-            </h1>
-            <p className="text-2xl lg:text-3xl mb-8 text-gray-100 font-light">
-              {service.subtitle}
-            </p>
-            <p className="text-xl mb-12 text-gray-200 max-w-3xl mx-auto leading-relaxed">
-              {service.hero}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Link to="/contact">
+            className="absolute -top-40 -right-40 w-80 h-80 bg-white/10 rounded-full"
+            animate={{ 
+              scale: [1, 1.2, 1],
+              rotate: [0, 180, 360]
+            }}
+            transition={{ 
+              duration: 20,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+          />
+          <motion.div
+            className="absolute -bottom-40 -left-40 w-96 h-96 bg-white/5 rounded-full"
+            animate={{ 
+              scale: [1.2, 1, 1.2],
+              rotate: [360, 180, 0]
+            }}
+            transition={{ 
+              duration: 25,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+          />
+        </div>
+        
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            {/* Left Content */}
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <motion.div
+                className="text-8xl mb-8"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                {service.icon}
+              </motion.div>
+              <h1 className="text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+                {service.title}
+              </h1>
+              <p className="text-2xl mb-8 text-gray-100 font-light leading-relaxed">
+                {service.subtitle}
+              </p>
+              <p className="text-lg mb-12 text-gray-200 leading-relaxed">
+                {service.hero}
+              </p>
+              <div className="flex flex-col sm:flex-row gap-6">
+                <Link to="/contact">
+                  <motion.button
+                    className="bg-white text-gray-900 px-10 py-4 rounded-full font-bold text-lg shadow-xl hover:shadow-2xl transition-all duration-300"
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    Start Your Project
+                  </motion.button>
+                </Link>
                 <motion.button
-                  className="bg-white text-gray-900 px-10 py-4 rounded-full font-bold text-lg shadow-xl hover:shadow-2xl transition-all duration-300"
+                  className="border-2 border-white text-white px-10 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-gray-900 transition-all duration-300"
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.98 }}
+                  onClick={() => document.getElementById('highlights').scrollIntoView({ behavior: 'smooth' })}
                 >
-                  Start Your Project
+                  Learn More
                 </motion.button>
-              </Link>
-              <motion.button
-                className="border-2 border-white text-white px-10 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-gray-900 transition-all duration-300"
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => document.getElementById('highlights').scrollIntoView({ behavior: 'smooth' })}
-              >
-                Learn More
-              </motion.button>
-            </div>
-          </motion.div>
+              </div>
+            </motion.div>
+
+            {/* Right Visual */}
+            <motion.div
+              className="relative"
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+            >
+              <div className="relative">
+                <motion.div
+                  className="w-full h-96 bg-white/10 backdrop-blur-sm rounded-3xl border border-white/20 flex items-center justify-center"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <motion.div
+                    className="text-9xl"
+                    animate={{ 
+                      rotateY: [0, 360],
+                    }}
+                    transition={{ 
+                      duration: 10,
+                      repeat: Infinity,
+                      ease: "linear"
+                    }}
+                  >
+                    {service.icon}
+                  </motion.div>
+                </motion.div>
+                {/* Floating elements */}
+                <motion.div
+                  className="absolute -top-6 -right-6 w-12 h-12 bg-white/20 rounded-full flex items-center justify-center"
+                  animate={{ y: [-10, 10, -10] }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                >
+                  ✨
+                </motion.div>
+                <motion.div
+                  className="absolute -bottom-6 -left-6 w-16 h-16 bg-white/15 rounded-full flex items-center justify-center"
+                  animate={{ y: [10, -10, 10] }}
+                  transition={{ duration: 4, repeat: Infinity }}
+                >
+                  🚀
+                </motion.div>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
@@ -354,20 +383,29 @@ const ServiceDetail = () => {
             {service.highlights.map((highlight, index) => (
               <motion.div
                 key={index}
-                className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 text-center group"
+                className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 text-center group relative overflow-hidden"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 whileHover={{ y: -8, scale: 1.02 }}
               >
-                <div className="text-5xl mb-6 group-hover:scale-110 transition-transform duration-300">
-                  {highlight.icon}
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">{highlight.title}</h3>
-                <p className="text-gray-600 mb-4 leading-relaxed">{highlight.description}</p>
-                <div className={`text-sm font-bold text-${service.color}-600 bg-${service.color}-50 px-3 py-1 rounded-full inline-block`}>
-                  {highlight.stat}
+                {/* Background gradient on hover */}
+                <div className={`absolute inset-0 ${service.lightAccent} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+                
+                <div className="relative z-10">
+                  <motion.div 
+                    className="text-5xl mb-6"
+                    whileHover={{ scale: 1.2, rotate: 10 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {highlight.icon}
+                  </motion.div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">{highlight.title}</h3>
+                  <p className="text-gray-600 mb-4 leading-relaxed">{highlight.description}</p>
+                  <div className={`text-sm font-bold ${service.textAccent} ${service.lightAccent} px-3 py-1 rounded-full inline-block`}>
+                    {highlight.stat}
+                  </div>
                 </div>
               </motion.div>
             ))}
@@ -406,11 +444,16 @@ const ServiceDetail = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: index * 0.2 }}
+                  whileHover={{ y: -10 }}
                 >
-                  <div className={`w-20 h-20 bg-gradient-to-br from-${service.color}-500 to-${service.color}-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg relative z-10`}>
+                  <motion.div 
+                    className={`w-20 h-20 ${service.accentColor} rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg relative z-10`}
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.3 }}
+                  >
                     <span className="text-3xl">{step.icon}</span>
-                  </div>
-                  <div className={`absolute top-8 left-1/2 transform -translate-x-1/2 w-8 h-8 bg-${service.color}-100 rounded-full flex items-center justify-center text-sm font-bold text-${service.color}-600`}>
+                  </motion.div>
+                  <div className={`absolute top-8 left-1/2 transform -translate-x-1/2 w-8 h-8 ${service.lightAccent} rounded-full flex items-center justify-center text-sm font-bold ${service.textAccent}`}>
                     {index + 1}
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-4">{step.title}</h3>
@@ -445,15 +488,22 @@ const ServiceDetail = () => {
             {service.stats.map((stat, index) => (
               <motion.div
                 key={index}
-                className="text-center bg-white rounded-2xl p-8 shadow-lg"
+                className="text-center bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300"
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
+                whileHover={{ y: -5 }}
               >
-                <div className={`text-4xl lg:text-5xl font-bold text-${service.color}-600 mb-2`}>
+                <motion.div 
+                  className={`text-4xl lg:text-5xl font-bold ${service.textAccent} mb-2`}
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.2 }}
+                >
                   {stat.number}
-                </div>
+                </motion.div>
                 <div className="text-gray-600 font-medium">{stat.label}</div>
               </motion.div>
             ))}
@@ -464,17 +514,20 @@ const ServiceDetail = () => {
             {service.testimonials.map((testimonial, index) => (
               <motion.div
                 key={index}
-                className="bg-white rounded-2xl p-8 shadow-lg"
+                className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300"
                 initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.2 }}
+                whileHover={{ y: -5 }}
               >
                 <div className="flex items-center mb-6">
-                  <img
+                  <motion.img
                     src={testimonial.avatar}
                     alt={testimonial.name}
                     className="w-16 h-16 rounded-full mr-4"
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.3 }}
                   />
                   <div>
                     <h4 className="font-bold text-gray-900">{testimonial.name}</h4>
@@ -492,9 +545,26 @@ const ServiceDetail = () => {
 
       {/* Final CTA */}
       <section className={`py-24 bg-gradient-to-br ${service.bgGradient} text-white relative overflow-hidden`}>
-        <div className="absolute inset-0 opacity-10">
-          <ServiceHeroScene serviceType={serviceType} />
+        {/* Animated Background */}
+        <div className="absolute inset-0">
+          <motion.div
+            className="absolute top-0 left-0 w-full h-full opacity-10"
+            style={{
+              backgroundImage: `radial-gradient(circle at 20% 50%, white 2px, transparent 2px),
+                               radial-gradient(circle at 80% 50%, white 2px, transparent 2px)`,
+              backgroundSize: '100px 100px'
+            }}
+            animate={{
+              backgroundPosition: ['0px 0px', '100px 100px']
+            }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+          />
         </div>
+        
         <div className="relative z-10 max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -502,7 +572,19 @@ const ServiceDetail = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <div className="text-6xl mb-8">{service.icon}</div>
+            <motion.div 
+              className="text-6xl mb-8"
+              animate={{ 
+                scale: [1, 1.1, 1],
+              }}
+              transition={{ 
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            >
+              {service.icon}
+            </motion.div>
             <h2 className="text-4xl lg:text-5xl font-bold mb-6">
               Ready to Transform Your Business?
             </h2>

@@ -1,386 +1,201 @@
-import { useState, useEffect, useRef } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import useStore from '../Store/UseStore';
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
-const services = [
-  { 
-    name: 'Custom Web Development', 
-    path: '/services/web-development',
-    icon: '💻',
-    tagline: 'Modern web apps that scale'
-  },
-  { 
-    name: 'Mobile App Solutions', 
-    path: '/services/mobile-app',
-    icon: '📱',
-    tagline: 'Native & cross-platform apps'
-  },
-  { 
-    name: 'Cloud Integration', 
-    path: '/services/cloud-integration',
-    icon: '☁️',
-    tagline: 'Scalable cloud infrastructure'
-  },
-  { 
-    name: 'AI & Automation', 
-    path: '/services/ai-automation',
-    icon: '🤖',
-    tagline: 'Intelligent process automation'
-  }
-];
-
-const products = [
-  { name: 'Clouditecture', path: '/products/clouditecture' }
-];
-
-const Navbar = () => {
-  const location = useLocation();
-  const servicesRef = useRef(null);
-  const productsRef = useRef(null);
-
-  const store = useStore();
-  const {
-    isMobileMenuOpen,
-    isServicesDropdownOpen,
-    toggleMobileMenu,
-    setMobileMenu,
-    setServicesDropdown
-  } = store || {};
-
-  const [isProductsDropdownOpenLocal, setIsProductsDropdownOpenLocal] = useState(false);
-  const productsOpenFromStore = store && typeof store.isProductsDropdownOpen !== 'undefined';
-  const isProductsDropdownOpen = productsOpenFromStore
-    ? store.isProductsDropdownOpen
-    : isProductsDropdownOpenLocal;
-
-  const setProductsDropdown = (val) => {
-    if (productsOpenFromStore && typeof store.setProductsDropdown === 'function') {
-      store.setProductsDropdown(val);
-    } else {
-      setIsProductsDropdownOpenLocal(val);
+const Services = () => {
+  const services = [
+    {
+      title: "Custom Web Development",
+      description: "Transform your ideas into high-performance web applications that scale with your business and delight your users.",
+      icon: "💻",
+      path: "/services/web-development",
+      features: ["React & Next.js", "Node.js Backend", "Database Integration", "API Development"],
+      color: "blue",
+      bgGradient: "from-blue-50 to-indigo-100",
+      hoverGradient: "from-blue-100 to-indigo-200"
+    },
+    {
+      title: "Mobile App Solutions",
+      description: "Build mobile apps that users love with native performance and cross-platform compatibility.",
+      icon: "📱",
+      path: "/services/mobile-app",
+      features: ["React Native", "iOS & Android", "Cross-platform", "App Store Deployment"],
+      color: "emerald",
+      bgGradient: "from-emerald-50 to-teal-100",
+      hoverGradient: "from-emerald-100 to-teal-200"
+    },
+    {
+      title: "Cloud Integration",
+      description: "Scale your applications with enterprise-grade cloud infrastructure that grows with your business.",
+      icon: "☁️",
+      path: "/services/cloud-integration",
+      features: ["AWS & Azure", "Serverless Architecture", "Auto-scaling", "Security & Compliance"],
+      color: "purple",
+      bgGradient: "from-purple-50 to-violet-100",
+      hoverGradient: "from-purple-100 to-violet-200"
+    },
+    {
+      title: "AI & Automation",
+      description: "Automate your workflows and unlock insights with custom AI solutions that work 24/7.",
+      icon: "🤖",
+      path: "/services/ai-automation",
+      features: ["Machine Learning", "Process Automation", "Chatbots & AI", "Data Analytics"],
+      color: "amber",
+      bgGradient: "from-amber-50 to-orange-100",
+      hoverGradient: "from-amber-100 to-orange-200"
     }
-  };
+  ];
 
-  // Track scroll position
-  const [scrolled, setScrolled] = useState(false);
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Homepage + not scrolled = white text
-  const isHome = location.pathname === '/';
-  const showWhite = isHome && !scrolled;
-
-  // Click outside to close dropdowns
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (servicesRef.current && !servicesRef.current.contains(event.target)) {
-        if (typeof setServicesDropdown === 'function') setServicesDropdown(false);
-      }
-      if (productsRef.current && !productsRef.current.contains(event.target)) {
-        setProductsDropdown(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [setServicesDropdown, store]);
-
-  const toggleProducts = () => setProductsDropdown(!isProductsDropdownOpen);
-  const toggleServices = () => {
-    if (typeof setServicesDropdown === 'function') {
-      setServicesDropdown(!isServicesDropdownOpen);
-    }
-  };
+  const stats = [
+    { number: "100+", label: "Projects Completed", icon: "🚀" },
+    { number: "50+", label: "Happy Clients", icon: "😊" },
+    { number: "99.9%", label: "Uptime Guarantee", icon: "⚡" },
+    { number: "24/7", label: "Support Available", icon: "🛟" }
+  ];
 
   return (
-  <motion.nav
-  className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-    scrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-transparent'
-  }`}
-  initial={{ y: -100 }}
-  animate={{ y: 0 }}
-  transition={{ duration: 0.6, ease: 'easeOut' }}
->
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <section className="py-32 bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            className="text-center mb-20"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <h1 className="text-5xl lg:text-7xl font-bold text-gray-900 mb-8">
+              Our <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Services</span>
+            </h1>
+            <p className="text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed mb-12">
+              We provide comprehensive software development services designed to help your business thrive in the digital landscape. From concept to deployment, we've got you covered.
+            </p>
+            
+            {/* Stats */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 max-w-4xl mx-auto">
+              {stats.map((stat, index) => (
+                <motion.div
+                  key={index}
+                  className="text-center"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.2 + index * 0.1 }}
+                >
+                  <div className="text-3xl mb-2">{stat.icon}</div>
+                  <div className="text-3xl lg:text-4xl font-bold text-gray-900 mb-1">{stat.number}</div>
+                  <div className="text-gray-600 font-medium">{stat.label}</div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Services Grid */}
+      <section className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Left: Logo & Company Name */}
-          <Link to="/" className="flex items-center space-x-2">
-            <motion.img
-              src="/logo.png"
-              alt="NeatTech Logo"
-              className="h-15 w-15 object-contain"
-              // whileHover={{ scale: 1.05 }}
-              // transition={{ duration: 0.2 }}
-            />
+        <motion.div
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+            Choose Your Perfect Solution
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Each service is crafted with precision and tailored to deliver exceptional results for your unique business needs.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-20">
+          {services.map((service, index) => (
             <motion.div
-              className={`text-2xl font-bold transition-colors duration-300 ${
-                showWhite ? 'text-white' : 'text-gray-900'
-              }`}
-              // whileHover={{ scale: 1.05 }}
-              // transition={{ duration: 0.2 }}
+              key={index}
+              className={`bg-gradient-to-br ${service.bgGradient} rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden group border border-gray-100`}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: index * 0.2 }}
+              whileHover={{ y: -12, scale: 1.02 }}
             >
-              NeatNode<span className={showWhite ? 'text-black' : 'text-[#2E8B9C]'}> Technologies</span>
-            </motion.div>
-          </Link>
+              <div className="p-10 flex flex-col h-full relative">
+                {/* Background Pattern */}
+                <div className="absolute top-0 right-0 w-32 h-32 opacity-10">
+                  <div className="text-8xl transform rotate-12">{service.icon}</div>
+                </div>
+                
+                <div className="flex items-center mb-8 relative z-10">
+                  <div className="text-6xl mr-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500">
+                    {service.icon}
+                  </div>
+                  <div>
+                    <h3 className="text-3xl font-bold text-gray-900 mb-2">{service.title}</h3>
+                    <div className={`w-16 h-1 bg-${service.color}-500 rounded-full`}></div>
+                  </div>
+                </div>
 
-          {/* Center: Nav Links */}
-          <div className="hidden md:flex items-center space-x-8">
-            {/* Products */}
-            <div className="relative" ref={productsRef}>
-              <button
-                onClick={toggleProducts}
-                className={`flex items-center text-sm font-medium transition-colors duration-200 hover:text-primary-500 ${
-                  location.pathname.startsWith('/products')
-                    ? 'text-primary-500'
-                    : showWhite
-                    ? 'text-white'
-                    : 'text-gray-700'
-                }`}
-              >
-                Products
-                <motion.svg
-                  className="ml-1 h-4 w-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  animate={{ rotate: isProductsDropdownOpen ? 180 : 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </motion.svg>
-              </button>
+                <p className="text-gray-700 mb-8 leading-relaxed flex-grow text-lg">
+                  {service.description}
+                </p>
 
-              <AnimatePresence>
-                {isProductsDropdownOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50"
-                  >
-                    {products.map((product) => (
-                      <Link
-                        key={product.path}
-                        to={product.path}
-                        onClick={() => setProductsDropdown(false)}
-                        className="block px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors duration-200"
+                <div className="mb-10">
+                  <h4 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider">
+                    Key Technologies
+                  </h4>
+                    {service.features.map((feature, featureIndex) => (
+                      <span
+                        key={featureIndex}
+                        className="px-3 py-1 bg-primary-100 text-primary-700 text-sm font-medium rounded-full"
                       >
-                        {product.name}
-                      </Link>
+                        {feature}
+                      </span>
                     ))}
-                    <Link
-                      to="/products"
-                      onClick={() => setProductsDropdown(false)}
-                      className="block px-4 py-3 text-sm font-medium text-primary-600 border-t border-gray-100 mt-2 hover:bg-primary-50 transition-colors duration-200"
-                    >
-                      View All Products
-                    </Link>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+                  </div>
+                </div>
 
-            {/* Services */}
-            <div className="relative" ref={servicesRef}>
-              <button
-                onClick={toggleServices}
-                className={`flex items-center text-sm font-medium transition-colors duration-200 hover:text-primary-500 ${
-                  location.pathname.startsWith('/services')
-                    ? 'text-primary-500'
-                    : showWhite
-                    ? 'text-white'
-                    : 'text-gray-700'
-                }`}
-              >
-                Services
-                <motion.svg
-                  className="ml-1 h-4 w-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  animate={{ rotate: isServicesDropdownOpen ? 180 : 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </motion.svg>
-              </button>
+                {/* Learn More Button */}
+                <Link to={service.path} className="mt-auto">
+               <motion.button
+  className="w-48 mx-auto bg-[#2E8B9C] text-white border-2 border-[#2E8B9C] py-2.5 px-6 rounded-full font-semibold hover:bg-[#1F6B7A] hover:border-[#1F6B7A] transition-colors duration-200"
+  whileHover={{ scale: 1.02 }}
+  whileTap={{ scale: 0.98 }}
+>
+  Learn More
+</motion.button>
+                  </Link>
+                </div>
+              </motion.div>
+          ))}
+        </div>
 
-              <AnimatePresence>
-                {isServicesDropdownOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute top-full left-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-gray-100 py-3 z-50"
-                  >
-                    {services.map((service) => (
-                      <motion.div
-                        key={service.path}
-                        whileHover={{ scale: 1.02, x: 4 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <Link
-                          to={service.path}
-                          onClick={() => typeof setServicesDropdown === 'function' && setServicesDropdown(false)}
-                          className="flex items-center px-4 py-4 text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 hover:shadow-sm rounded-lg mx-2 transition-all duration-200 group"
-                        >
-                          <div className="text-2xl mr-4 group-hover:scale-110 transition-transform duration-200">
-                            {service.icon}
-                          </div>
-                          <div className="flex-1">
-                            <div className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-200">
-                              {service.name}
-                            </div>
-                            <div className="text-sm text-gray-500 group-hover:text-gray-600 transition-colors duration-200">
-                              {service.tagline}
-                            </div>
-                          </div>
-                          <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                            <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                            </svg>
-                          </div>
-                        </Link>
-                      </motion.div>
-                    ))}
-                    <motion.div
-                      className="border-t border-gray-100 mt-2 pt-2"
-                      whileHover={{ scale: 1.02 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Link
-                        to="/services"
-                        onClick={() => typeof setServicesDropdown === 'function' && setServicesDropdown(false)}
-                        className="flex items-center justify-center px-4 py-3 mx-2 text-sm font-semibold text-blue-600 bg-gradient-to-r from-blue-50 to-purple-50 hover:from-blue-100 hover:to-purple-100 rounded-lg transition-all duration-200"
-                      >
-                        View All Services
-                        <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                        </svg>
-                      </Link>
-                    </motion.div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
-            {/* About */}
-            <Link
-              to="/about"
-              className={`text-sm font-medium transition-colors duration-200 hover:text-primary-500 ${
-                location.pathname === '/about'
-                  ? 'text-primary-500'
-                  : showWhite
-                  ? 'text-white'
-                  : 'text-gray-700'
-              }`}
-            >
-              About
-            </Link>
-          </div>
-
-          {/* Right: Contact Button */}
-          <Link to="/contact" className="hidden md:block">
+        {/* CTA Section */}
+        <motion.div
+          className="text-center bg-gradient-to-br from-[#415A77] via-[#2E8B9C] to-[#9BBEC8] rounded-2xl p-12 text-white"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <h2 className="text-3xl font-bold mb-4">
+            Ready to Start Your Project?
+          </h2>
+          <p className="text-xl mb-8 opacity-90">
+            Let's discuss how we can bring your vision to life with our expertise and innovation.
+          </p>
+          <Link to="/contact">
             <motion.button
-              className={`px-8 py-2 rounded-full font-semibold text-sm transition-colors duration-200 shadow-lg hover:shadow-xl ${
-                scrolled
-                  ? 'bg-[#A8DADC] text-[#1D3557] hover:bg-[#F1FAEE]'
-                  : 'bg-[#A8DADC] text-[#1D3557] hover:bg-[#F1FAEE]'
-              }`}
+              className="bg-white text-[#2E8B9C] px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-colors duration-200"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
             >
-              Contact
+              Get Started Today
             </motion.button>
           </Link>
-
-          {/* Mobile menu button */}
-          <div className="md:hidden">
-            <button
-              onClick={toggleMobileMenu}
-              className={`${showWhite ? 'text-white' : 'text-gray-900'} hover:text-primary-500 focus:outline-none`}
-            >
-              <motion.svg
-                className="h-6 w-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                animate={{ rotate: isMobileMenuOpen ? 90 : 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d={isMobileMenuOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'}
-                />
-              </motion.svg>
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Navigation */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="md:hidden border-t border-gray-200 bg-white/95 backdrop-blur-md"
-            >
-              <div className="px-2 pt-2 pb-3 space-y-1">
-                <Link to="/" onClick={() => setMobileMenu(false)} className="block px-3 py-2 text-base font-medium">
-                  Home
-                </Link>
-                <Link to="/about" onClick={() => setMobileMenu(false)} className="block px-3 py-2 text-base font-medium">
-                  About
-                </Link>
-
-                <div className="px-3 py-2">
-                  <div className="text-base font-medium text-gray-700 mb-2">Services</div>
-                  <div className="pl-4 space-y-1">
-                    {services.map((service) => (
-                      <Link key={service.path} to={service.path} onClick={() => setMobileMenu(false)} className="block py-2 text-sm">
-                        {service.name}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="px-3 py-2">
-                  <div className="text-base font-medium text-gray-700 mb-2">Products</div>
-                  <div className="pl-4 space-y-1">
-                    {products.map((product) => (
-                      <Link key={product.path} to={product.path} onClick={() => setMobileMenu(false)} className="block py-2 text-sm">
-                        {product.name}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-
-                <Link to="/contact" onClick={() => setMobileMenu(false)} className="block px-3 py-2">
-                  <motion.button
-                    className="bg-[#A8DADC] text-[#1D3557] px-8 py-2 rounded-full font-semibold text-sm hover:bg-[#F1FAEE] transition-colors duration-200 shadow-lg hover:shadow-xl"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    Contact
-                  </motion.button>
-                </Link>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        </motion.div>
       </div>
-    </motion.nav>
+    </div>
   );
 };
 
-export default Navbar;
+export default Services;
