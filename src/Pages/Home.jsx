@@ -23,7 +23,7 @@ const Home = () => {
       <section
         className="relative flex flex-col items-center justify-center bg-cover bg-center bg-no-repeat pt-26 overflow-hidden"
         style={{
-          minHeight: "125vh",
+          minHeight: "130vh",
           backgroundImage: "url('/bg2.png')",
         }}
         onMouseMove={(e) => {
