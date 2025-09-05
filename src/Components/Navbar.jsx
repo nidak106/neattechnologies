@@ -2,16 +2,17 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import useStore from '../Store/UseStore';
+import { Code, Smartphone, Cloud, Bot, Package } from "lucide-react"; // added Package for products
 
 const services = [
-  { name: 'Custom Web Development', path: '/services/web-development' },
-  { name: 'Mobile App Solutions', path: '/services/mobile-app' },
-  { name: 'Cloud Integration', path: '/services/cloud-integration' },
-  { name: 'AI & Automation', path: '/services/ai-automation' }
+  { name: "Custom Web Development", path: "/services/web-development", icon: <Code className="w-5 h-5 text-[#2E8B9C]" /> },
+  { name: "Mobile App Solutions", path: "/services/mobile-app", icon: <Smartphone className="w-5 h-5 text-[#2E8B9C]" /> },
+  { name: "Cloud Integration", path: "/services/cloud-integration", icon: <Cloud className="w-5 h-5 text-[#2E8B9C]" /> },
+  { name: "AI & Automation", path: "/services/ai-automation", icon: <Bot className="w-5 h-5 text-[#2E8B9C]" /> }
 ];
 
 const products = [
-  { name: 'Clouditecture', path: '/products/clouditecture' }
+  { name: "Clouditecture", path: "/products/clouditecture", icon: <Package className="w-5 h-5 text-[#2E8B9C]" /> }
 ];
 
 const Navbar = () => {
@@ -50,7 +51,6 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Homepage + not scrolled = white text
   const isHome = location.pathname === '/';
   const showWhite = isHome && !scrolled;
 
@@ -77,14 +77,14 @@ const Navbar = () => {
   };
 
   return (
-  <motion.nav
-  className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-    scrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-transparent'
-  }`}
-  initial={{ y: -100 }}
-  animate={{ y: 0 }}
-  transition={{ duration: 0.6, ease: 'easeOut' }}
->
+    <motion.nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-transparent'
+      }`}
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Left: Logo & Company Name */}
@@ -93,15 +93,11 @@ const Navbar = () => {
               src="/logo.png"
               alt="NeatTech Logo"
               className="h-15 w-15 object-contain"
-              // whileHover={{ scale: 1.05 }}
-              // transition={{ duration: 0.2 }}
             />
             <motion.div
               className={`text-2xl font-bold transition-colors duration-300 ${
                 showWhite ? 'text-white' : 'text-gray-900'
               }`}
-              // whileHover={{ scale: 1.05 }}
-              // transition={{ duration: 0.2 }}
             >
               NeatNode<span className={showWhite ? 'text-black' : 'text-[#2E8B9C]'}> Technologies</span>
             </motion.div>
@@ -141,24 +137,34 @@ const Navbar = () => {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -10, scale: 0.95 }}
                     transition={{ duration: 0.2 }}
-                    className="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50"
+                    className="absolute top-full left-0 mt-2 w-72 bg-white rounded-lg shadow-lg border border-gray-200 p-3 z-50 grid grid-cols-1 gap-2"
                   >
                     {products.map((product) => (
                       <Link
                         key={product.path}
                         to={product.path}
                         onClick={() => setProductsDropdown(false)}
-                        className="block px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors duration-200"
                       >
-                        {product.name}
+                        <motion.div
+                          whileHover={{ scale: 1.03 }}
+                          whileTap={{ scale: 0.98 }}
+                          className="flex items-center gap-3 bg-gray-50 hover:bg-[#EAF7F9] p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
+                        >
+                          <div className="flex items-center justify-center w-10 h-10 rounded-md bg-[#C9E4E7]">
+                            {product.icon}
+                          </div>
+                          <span className="text-sm font-medium text-gray-800">{product.name}</span>
+                        </motion.div>
                       </Link>
                     ))}
+
                     <Link
                       to="/products"
                       onClick={() => setProductsDropdown(false)}
-                      className="block px-4 py-3 text-sm font-medium text-primary-600 border-t border-gray-100 mt-2 hover:bg-primary-50 transition-colors duration-200"
                     >
-                      View All Products
+                      <div className="mt-2 text-center text-sm font-medium text-primary-600 hover:underline">
+                        View All Products
+                      </div>
                     </Link>
                   </motion.div>
                 )}
@@ -197,24 +203,34 @@ const Navbar = () => {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -10, scale: 0.95 }}
                     transition={{ duration: 0.2 }}
-                    className="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50"
+                    className="absolute top-full left-0 mt-2 w-72 bg-white rounded-lg shadow-lg border border-gray-200 p-3 z-50 grid grid-cols-1 gap-2"
                   >
                     {services.map((service) => (
                       <Link
                         key={service.path}
                         to={service.path}
                         onClick={() => typeof setServicesDropdown === 'function' && setServicesDropdown(false)}
-                        className="block px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors duration-200"
                       >
-                        {service.name}
+                        <motion.div
+                          whileHover={{ scale: 1.03 }}
+                          whileTap={{ scale: 0.98 }}
+                          className="flex items-center gap-3 bg-gray-50 hover:bg-[#EAF7F9] p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
+                        >
+                          <div className="flex items-center justify-center w-10 h-10 rounded-md bg-[#C9E4E7]">
+                            {service.icon}
+                          </div>
+                          <span className="text-sm font-medium text-gray-800">{service.name}</span>
+                        </motion.div>
                       </Link>
                     ))}
+
                     <Link
                       to="/services"
                       onClick={() => typeof setServicesDropdown === 'function' && setServicesDropdown(false)}
-                      className="block px-4 py-3 text-sm font-medium text-primary-600 border-t border-gray-100 mt-2 hover:bg-primary-50 transition-colors duration-200"
                     >
-                      View All Services
+                      <div className="mt-2 text-center text-sm font-medium text-primary-600 hover:underline">
+                        View All Services
+                      </div>
                     </Link>
                   </motion.div>
                 )}

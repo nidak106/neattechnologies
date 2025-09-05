@@ -199,7 +199,7 @@ const About = () => {
             {values.map((value, idx) => (
               <motion.div
                 key={idx}
-                className="bg-[#2E8B9C] text-white rounded-xl p-8 shadow-lg cursor-default"
+                className="bg-[#eaf8fa] text-[#2E8B9C] rounded-xl p-8 shadow-lg cursor-default"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -208,7 +208,7 @@ const About = () => {
               >
                 <div className="text-4xl mb-4">{value.icon}</div>
                 <h3 className="text-xl font-semibold mb-2">{value.title}</h3>
-                <p className="text-[#B0D3D7]">{value.description}</p>
+                <p className="text-[#1b5258]">{value.description}</p>
               </motion.div>
             ))}
           </div>
@@ -221,30 +221,31 @@ const About = () => {
         <p className="max-w-3xl mx-auto mb-6">
           Our talented team of professionals is dedicated to driving your success.
         </p>
-       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { name: "Nida Khan", role: "Chief Technology Officer", expertise: "Full-stack Development" },
-              { name: "Zulqarnain ", role: "Head of Design", expertise: "Dev Ops Engineer" },
-              { name: "Basit", role: "Senior Developer", expertise: "Mobile & Cloud Solutions" }
-            ].map((member, index) => (
-              <motion.div
-                key={index}
-                className="bg-white rounded-xl shadow-lg p-8 text-center hover:shadow-xl transition-shadow duration-300"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-                whileHover={{ y: -5 }}
-              >
-                <div className="w-22 h-22 bg-[#C9E4E7] rounded-full mx-auto mb-4 flex items-center justify-center">
-                  <span className="text-2xl">👤</span>
-                </div>
-                <h3 className="text-xl font-semibold text-[#415A77] mb-2">{member.name}</h3>
-                <p className="text-[#2E8B9C] font-medium mb-2">{member.role}</p>
-                <p className="text-gray-600 text-sm">{member.expertise}</p>
-              </motion.div>
-            ))}
-          </div>
+     <div className="grid grid-cols-1 md:grid-cols-3 gap-2 justify-items-center">
+  {[
+    { name: "Nida Khan", role: "Chief Technology Officer", expertise: "Full-stack Development" },
+    { name: "Zulqarnain", role: "Head of Design", expertise: "Dev Ops Engineer" },
+    { name: "Basit", role: "Senior Developer", expertise: "Mobile & Cloud Solutions" }
+  ].map((member, index) => (
+    <motion.div
+      key={index}
+      className="bg-white rounded-lg shadow-md p-6 text-center hover:shadow-lg transition-shadow duration-300 w-full max-w-[400px]"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay: index * 0.2 }}
+      whileHover={{ y: -4 }}
+    >
+      <div className="w-16 h-16 bg-[#C9E4E7] rounded-full mx-auto mb-3 flex items-center justify-center">
+        <span className="text-xl">👤</span>
+      </div>
+      <h3 className="text-lg font-semibold text-[#415A77] mb-1">{member.name}</h3>
+      <p className="text-[#2E8B9C] font-medium text-sm mb-1">{member.role}</p>
+      <p className="text-gray-600 text-xs">{member.expertise}</p>
+    </motion.div>
+  ))}
+</div>
+
       </section>
     </div>
   );

@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const Home = () => {
   const stepsPreview = [
@@ -13,124 +14,126 @@ const Home = () => {
     { title: "DevOps Integration", icon: "⚙️" },
   ];
 
-  function BigButton({ children, className = "", ...props }) {
-    return (
-      <button
-        className={`px-10 py-4 rounded-xl font-semibold text-lg shadow-md
-          bg-gradient-to-r from-[#A8DADC] to-[#9BBEC8] text-[#1D3557]
-          hover:from-[#9BBEC8] hover:to-[#A8DADC]
-          transition-all duration-300 focus:ring-4 focus:ring-[#A8DADC]/50
-          focus:outline-none ${className}`}
-        {...props}
-      >
-        {children}
-      </button>
-    );
-  }
+  const [cursor, setCursor] = useState({ x: 0, y: 0 });
+  const [spotlightActive, setSpotlightActive] = useState(false);
 
   return (
-    <div className="min-h-screen ">
-   {/* Hero Section */}
-<section
-  className="relative flex flex-col items-center justify-center bg-cover bg-center bg-no-repeat pt-26" 
-  style={{
-    minHeight: "120vh", 
-    backgroundImage:
-      "url('/background.png')",
-  }}
->
-  {/* Overlay */}
-  <div className="absolute inset-0 bg-black/20"></div>
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <section
+        className="relative flex flex-col items-center justify-center bg-cover bg-center bg-no-repeat pt-26 overflow-hidden"
+        style={{
+          minHeight: "125vh",
+          backgroundImage: "url('/bg2.png')",
+        }}
+        onMouseMove={(e) => {
+          const { clientX, clientY } = e;
+          setCursor({ x: clientX, y: clientY });
+          if (!spotlightActive) setSpotlightActive(true);
+        }}
+        onMouseLeave={() => setSpotlightActive(false)}
+      >
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-black/20"></div>
 
-  {/* Content */}
-  <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
-    <motion.h1
-      className="text-4xl sm:text-6xl lg:text-7xl font-bold text-white mb-10 leading-tight drop-shadow-lg"
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, delay: 0.2 }}
-    >
-      Innovating the Future,{" "}
-      <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#A8DADC] to-[#F1FAEE]">
-        Neatly.
-      </span>
-    </motion.h1>
+        {/* Cursor spotlight effect */}
+        <div
+          className={`pointer-events-none absolute inset-0 transition-opacity duration-500`}
+          style={{
+            opacity: spotlightActive ? 1 : 0,
+            background: `radial-gradient(600px circle at ${cursor.x}px ${cursor.y}px, rgba(255,255,255,0.15), transparent 80%)`,
+          }}
+        ></div>
 
-    <motion.p
-      className="text-lg sm:text-xl lg:text-2xl text-white mb-12 max-w-2xl mx-auto leading-relaxed drop-shadow-md"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, delay: 0.4 }}
-    >
-      Neat Technologies is a leading provider of bespoke software solutions,
-      empowering startups and enterprises to transform their digital presence
-      with cutting-edge technology and elegant design.
-    </motion.p>
+        {/* Content */}
+        <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
+          <motion.h1
+            className="text-5xl sm:text-7xl lg:text-7xl font-extrabold text-white mb-10 leading-tight drop-shadow-lg"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            Innovating the Future,{" "}
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#88dce0] to-[#3fa7a0]">
+              Neatly.
+            </span>
+          </motion.h1>
 
-    {/* Buttons */}
-    <div className="flex justify-center gap-6 mb-20">
-      <Link to="/services">
-        <button
-          className="px-10 py-4 rounded-xl font-semibold text-lg shadow-md
-          bg-gradient-to-r from-[#A8DADC] to-[#9BBEC8] text-[#1F5D6F]
-          hover:from-[#9BBEC8] hover:to-[#A8DADC]
-          transition-all duration-300"
-        >
-          Our Services
-        </button>
-      </Link>
-      <Link to="/contact">
-        <button
-          className="px-10 py-4 rounded-xl font-semibold text-lg shadow-md
-          bg-transparent border border-[#A8DADC] text-[#1F5D6F]
-          hover:bg-[#A8DADC] hover:text-[#1D3557]
-          transition-all duration-300"
-        >
-          Contact Us
-        </button>
-      </Link>
-    </div>
+          <motion.p
+            className="text-lg sm:text-xl lg:text-2xl text-white mb-12 max-w-2xl mx-auto leading-relaxed drop-shadow-md"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            Neat Technologies is a leading provider of bespoke software solutions,
+            empowering startups and enterprises to transform their digital presence
+            with cutting-edge technology and elegant design.
+          </motion.p>
 
-    {/* Services Cards inside Hero */}
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 ">
-      {[
-        {
-          icon: "💻",
-          title: "Custom Web Development",
-          description:
-            "Build powerful, responsive web applications tailored to your business needs.",
-        },
-        {
-          icon: "📱",
-          title: "Mobile App Solutions",
-          description:
-            "Create native and cross-platform apps delivering exceptional user experiences.",
-        },
-        {
-          icon: "☁️",
-          title: "Cloud Integration",
-          description:
-            "Seamlessly migrate to the cloud for scalable, high-performance infrastructure.",
-        },
-      ].map(({ icon, title, description }, idx) => (
-        <motion.div
-          key={idx}
-          className="bg-white/90 backdrop-blur-md rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: idx * 0.2 }}
-        >
-          <div className="text-5xl text-[#2E8B9C] mb-4">{icon}</div>
-          <h3 className="text-2xl font-semibold text-[#1D3557] mb-3">
-            {title}
-          </h3>
-          <p className="text-gray-700 leading-relaxed">{description}</p>
-        </motion.div>
-      ))}
-    </div>
-  </div>
-</section>
+          {/* Services Cards inside Hero */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            {[
+              {
+                icon: "💻",
+                title: "Custom Web Development",
+                description:
+                  "Build powerful, responsive web applications tailored to your business needs.",
+              },
+              {
+                icon: "📱",
+                title: "Mobile App Solutions",
+                description:
+                  "Create native and cross-platform apps delivering exceptional user experiences.",
+              },
+              {
+                icon: "☁️",
+                title: "Cloud Integration",
+                description:
+                  "Seamlessly migrate to the cloud for scalable, high-performance infrastructure.",
+              },
+            ].map(({ icon, title, description }, idx) => (
+              <motion.div
+                key={idx}
+                className="bg-white/90 backdrop-blur-md rounded-2xl p-8 shadow-lg cursor-pointer"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: idx * 0.2 }}
+                whileHover={{ scale: 1.05, rotate: [-1, 1, -1] }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <motion.div
+                  animate={{ y: [0, -5, 0] }}
+                  transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+                  className="text-5xl text-[#2E8B9C] mb-4"
+                >
+                  {icon}
+                </motion.div>
+                <h3 className="text-2xl font-semibold text-[#1D3557] mb-3">
+                  {title}
+                </h3>
+                <p className="text-gray-700 leading-relaxed">{description}</p>
+              </motion.div>
+            ))}
+          </div>
 
+          {/* Single Button Below Cards */}
+          <Link to="/services">
+            <motion.button
+              className="px-10 py-4 rounded-xl font-semibold text-lg shadow-md
+              bg-gradient-to-r from-[#A8DADC] to-[#9BBEC8] text-[#1F5D6F]
+              hover:from-[#9BBEC8] hover:to-[#A8DADC]
+              transition-all duration-300"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.8 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              View Our Services
+            </motion.button>
+          </Link>
+        </div>
+      </section>
 
       {/* Client Reviews */}
       <section className="py-24 bg-[#F7FAFC]">

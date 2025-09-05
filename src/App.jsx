@@ -8,7 +8,7 @@ import HowWeWork from './Pages/HowWeWork';
 import Contact from './Pages/Contact';
 import Footer from './Pages/Footer';
 import ScrollToTop from './Pages/ScrollTop';
-
+import Clouditecture from './Pages/Products/Clouditecture';
 function App() {
   return (
     <Router>
@@ -18,6 +18,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/services" element={<Services />} />
           <Route path="/services/:serviceType" element={<ServiceDetail />} />
+          <Route path="/products/clouditecture" element={<Clouditecture />} />
           <Route path="/about" element={<About />} />
           <Route path="/how-we-work" element={<HowWeWork />} />
           <Route path="/contact" element={<Contact />} />
