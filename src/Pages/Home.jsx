@@ -24,7 +24,7 @@ const Home = () => {
         className="relative flex flex-col items-center justify-center bg-cover bg-center bg-no-repeat pt-26 overflow-hidden"
         style={{
           minHeight: "130vh",
-          backgroundImage: "url('/bg2.png')",
+          backgroundImage: "url('/bg3.png')",
         }}
         onMouseMove={(e) => {
           const { clientX, clientY } = e;
@@ -71,7 +71,7 @@ const Home = () => {
           </motion.p>
 
           {/* Services Cards inside Hero */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
             {[
               {
                 icon: "💻",
@@ -94,7 +94,7 @@ const Home = () => {
             ].map(({ icon, title, description }, idx) => (
               <motion.div
                 key={idx}
-                className="bg-white/90 backdrop-blur-md rounded-2xl p-8 shadow-lg cursor-pointer"
+                className="bg-white/60 backdrop-blur-md rounded-2xl p-8 shadow-lg cursor-pointer"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: idx * 0.2 }}
@@ -122,7 +122,7 @@ const Home = () => {
               className="px-10 py-4 rounded-xl font-semibold text-lg shadow-md
               bg-gradient-to-r from-[#A8DADC] to-[#9BBEC8] text-[#1F5D6F]
               hover:from-[#9BBEC8] hover:to-[#A8DADC]
-              transition-all duration-300"
+              transition-all duration-300 cursor-pointer"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.8 }}

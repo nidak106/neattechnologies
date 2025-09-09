@@ -103,7 +103,7 @@ const About = () => {
 
       <button
         onClick={scrollToTeam}
-        className="mt-8 bg-[#2E8B9C] hover:bg-[#1F5D6F] text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300"
+        className="mt-8 bg-[#2E8B9C] hover:bg-[#1F5D6F] text-white font-semibold py-3 px-6 cursor-pointer  rounded-lg transition-colors duration-300"
       >
         Meet the Team
       </button>

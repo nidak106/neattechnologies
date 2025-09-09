@@ -60,7 +60,7 @@ const HeroSection = ({ service }) => {
             <div className="flex flex-col sm:flex-row gap-6">
               <Link to="/contact">
                 <motion.button
-                  className="bg-white text-gray-900 px-10 py-4 rounded-full font-bold text-lg shadow-xl hover:shadow-2xl transition-all duration-300"
+                  className="bg-white text-gray-900 px-10 py-4 rounded-full  cursor-pointer font-bold text-lg shadow-xl hover:shadow-2xl transition-all duration-300"
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.98 }}
                 >
@@ -68,7 +68,7 @@ const HeroSection = ({ service }) => {
                 </motion.button>
               </Link>
               <motion.button
-                className="border-2 border-white text-white px-10 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-gray-900"
+                className="border-2 border-white text-white px-10 py-4 rounded-full cursor-pointer font-bold text-lg hover:bg-white hover:text-gray-900"
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() =>

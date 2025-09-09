@@ -104,12 +104,12 @@ const Navbar = () => {
           </Link>
 
           {/* Center: Nav Links */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-8 cursor-pointer">
             {/* Products */}
-            <div className="relative" ref={productsRef}>
+            <div className="relative cursor-pointer" ref={productsRef}>
               <button
                 onClick={toggleProducts}
-                className={`flex items-center text-sm font-medium transition-colors duration-200 hover:text-primary-500 ${
+                className={`flex items-center text-sm font-medium  cursor-pointer transition-colors duration-200 hover:text-primary-500 ${
                   location.pathname.startsWith('/products')
                     ? 'text-primary-500'
                     : showWhite
@@ -137,7 +137,7 @@ const Navbar = () => {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -10, scale: 0.95 }}
                     transition={{ duration: 0.2 }}
-                    className="absolute top-full left-0 mt-2 w-72 bg-white rounded-lg shadow-lg border border-gray-200 p-3 z-50 grid grid-cols-1 gap-2"
+                    className="absolute top-full left-0 mt-2 w-72 bg-white rounded-lg shadow-lg border border-gray-200 p-3 z-50 grid grid-cols-1 gap-2 "
                   >
                     {products.map((product) => (
                       <Link
@@ -175,7 +175,7 @@ const Navbar = () => {
             <div className="relative" ref={servicesRef}>
               <button
                 onClick={toggleServices}
-                className={`flex items-center text-sm font-medium transition-colors duration-200 hover:text-primary-500 ${
+                className={`flex items-center text-sm font-medium transition-colors  cursor-pointer duration-200 hover:text-primary-500 ${
                   location.pathname.startsWith('/services')
                     ? 'text-primary-500'
                     : showWhite
@@ -255,7 +255,7 @@ const Navbar = () => {
           {/* Right: Contact Button */}
           <Link to="/contact" className="hidden md:block">
             <motion.button
-              className={`px-8 py-2 rounded-full font-semibold text-sm transition-colors duration-200 shadow-lg hover:shadow-xl ${
+              className={`px-8 py-2 rounded-full font-semibold text-sm transition-colors duration-200 shadow-lg hover:shadow-xl cursor-pointer ${
                 scrolled
                   ? 'bg-[#A8DADC] text-[#1D3557] hover:bg-[#F1FAEE]'
                   : 'bg-[#A8DADC] text-[#1D3557] hover:bg-[#F1FAEE]'

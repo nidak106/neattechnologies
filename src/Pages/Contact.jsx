@@ -210,7 +210,7 @@ const Contact = () => {
                   <motion.button
                     type="submit"
                     disabled={isSubmitting}
-                    className={`w-full py-4 px-6 rounded-lg font-semibold text-white transition-all duration-200 ${
+                    className={`w-full py-4 px-6 rounded-lg font-semibold text-white cursor-pointer transition-all duration-200 ${
                       isSubmitting 
                         ? 'bg-[#9BBEC8] cursor-not-allowed' 
                         : 'bg-[#2E8B9C] hover:bg-[#1D3557] hover:shadow-lg'
